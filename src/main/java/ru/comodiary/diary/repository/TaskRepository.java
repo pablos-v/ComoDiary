@@ -9,10 +9,14 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    public List<Task> findByExpireDateGreaterThanEqual(LocalDate expireDate);
+    public List<Task> findByExpireDateGreaterThanEqual(LocalDate date);
+
+    // between берёт значение включительно или нет?
+    public List<Task> findByExpireDateBetween(LocalDate startDate, LocalDate lastDate);
+    public List<Task> findByExpireDate(LocalDate date);
 
     // поиск
-    public List<Task> findDistinctByTitleContainingOrDescriptionContaining(String search);
+    public List<Task> findDistinctByTitleContainingOrDescriptionContaining(String search, String search1);
 
 
 }
