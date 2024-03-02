@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<!DOCTYPE html>
-<html>
-<head>
     <meta charset="utf-8">
     <title>Календарь</title>
 </head>
@@ -16,7 +9,24 @@
     <p>Выберите дату: <input type="date" name="date">
         <input type="submit" value="Отправить"></p>
 </form>
-</body>
-</html>
+
+<h1>Table of tasks</h1><br>
+<table>
+    <tr>
+        <th>Task ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Expire date</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="task: ${tasks}">
+        <td th:text="${task.getId()}"></td>
+        <td th:text="${task.getTitle()}"></td>
+        <td th:text="${task.getDescription()}"></td>
+        <td th:text="${task.getExpireDate().toString()}"></td>
+        <td th:text="${task.getStatus().toString()}"></td>
+    </tr>
+</table>
+
 </body>
 </html>

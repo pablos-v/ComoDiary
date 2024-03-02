@@ -30,4 +30,11 @@ public class Task {
     @Column(name = "status")
     private TaskStatus status;
 
+    // for tests
+    public Task(String title, @NonNull String description, LocalDate expireDate, TaskStatus status) {
+        this.title = title;
+        this.description = description;
+        this.expireDate = expireDate;
+        this.status = status;
+    }
 }
