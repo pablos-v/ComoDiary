@@ -1,10 +1,30 @@
 .thead-bg-color {
     background-color: #0447b8;
     color: #ffffff;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .day-cell {
     position: relative;
+}
+
+.month-task-title {
+    /*text-decoration: none;*/
+}
+
+.month-task-title-done {
+    color: gray;
+    text-decoration: line-through;
+}
+
+.month-task-title-expired {
+    color: darkred;
+    font-weight: bold;
+}
+
+.month-many-tasks {
+    font-weight: bold;
 }
 
 .day-num {
@@ -12,6 +32,24 @@
     position: absolute;
     top: 2px;
     right: 2px;
+    text-decoration: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+a {
+    color: #146c43;
+    text-decoration: none;
+}
+
+h2 {
+    text-align: center
 }
 
 body {
@@ -29,4 +67,36 @@ td {
     border: 1px solid black;
     height: 120px;
     text-align: center; /* Центрируем содержимое по центру ячейки */
+}
+
+th {
+    padding: 5px;
+}
+
+.nav-buttons {
+    margin-bottom: 5px;
+    text-align: center;
+}
+.arrow-button {
+    display: inline-block;
+    background-color: #78aafd;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    margin-right: 40px;
+    margin-left: 40px;
+}
+.arrow-button.left::before {
+    color: #ffffff;
+    content: "<<<";
+    margin-right: 5px;
+}
+
+.arrow-button.right::after {
+    color: #ffffff;
+    content: ">>>";
+    margin-left: 5px;
 }

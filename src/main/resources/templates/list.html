@@ -2,9 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
+    <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
+    <title>Задачи на 4 дня</title>
 </head>
 <body>
+<menu>
+    <form action="/list" method="GET">
+        <p>Выберите начальную дату: <input type="date" name="date">
+            <input type="submit" value="Показать задачи"></p>
+    </form>
+
+</menu>
+
+<ul>
+    <li th:each="task : ${tasks}" >
+        <p th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+    </li>
+</ul>
 
 </body>
 </html>
