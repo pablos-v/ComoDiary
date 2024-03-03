@@ -5,6 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-
+<form action="/4_days" method="GET">
+    <p>Выберите начальную дату: <input type="date" name="date">
+        <input type="submit" value="Показать задачи"></p>
+</form>
+<ul>
+    <li th:each="task : ${tasks}" >
+        <p th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+    </li>
+</ul>
 </body>
 </html>

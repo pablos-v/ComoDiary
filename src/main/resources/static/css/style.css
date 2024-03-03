@@ -1,0 +1,32 @@
+.thead-bg-color {
+    background-color: #0447b8;
+    color: #ffffff;
+}
+
+.day-cell {
+    position: relative;
+}
+
+.day-num {
+    font-weight: bold;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+table {
+    width: 100%; /* Занимает всю ширину экрана */
+    table-layout: fixed; /* Фиксированный размер столбцов */
+    border-collapse: collapse;
+}
+
+td {
+    width: calc(100% / 7); /* 100% / 7 (число столбцов) = 20% */
+    border: 1px solid black;
+    height: 120px;
+    text-align: center; /* Центрируем содержимое по центру ячейки */
+}

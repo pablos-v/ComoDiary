@@ -20,6 +20,7 @@ public class ViewController {
     @GetMapping("/")
     public String viewMonth(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("tasks", service.getAllTasksForMonth(date));
+        model.addAttribute("month", service.getMonthName(date));
         return "month";
     }
 
