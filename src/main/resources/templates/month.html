@@ -2,47 +2,48 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
+    <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
     <title>Календарь задач</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
-<form action="." method="GET">
+<form action="/" method="GET">
     <p>Выберите дату: <input type="date" name="date">
-        <input type="submit" value="Отправить"></p>
+        <input type="submit" value="Показать задачи"></p>
 </form>
-<h2>Календарь задач на месяц</h2>
-<table>
-    <tr>
-        <th>Пн</th>
-        <th>Вт</th>
-        <th>Ср</th>
-        <th>Чт</th>
-        <th>Пт</th>
-        <th>Сб</th>
-        <th>Вс</th>
-    </tr>
-    <tr th:each="week : ${tasks.getWeeks()}">
-        <td th:each="day : ${week.getDays()}">
-            <div th:if="${day.getNumber() != null}" th:text="${day.getNumber()}">
-<!--                <p th:text="${day.getNumber()}"></p>-->
-            </div>
+<div>
+    <h2 th:text="${month}">Календарь задач на месяц</h2>
+    <div>
+        <div>
+            <table>
+                <thead class="thead-bg-color">
+                <tr>
+                    <th>Пн</th>
+                    <th>Вт</th>
+                    <th>Ср</th>
+                    <th>Чт</th>
+                    <th>Пт</th>
+                    <th>Сб</th>
+                    <th>Вс</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="week : ${tasks.getWeeks()}">
+                    <td th:each="day : ${week.getDays()}" th:class="'day-cell'">
+                        <div th:if="${day.getNumber() != null}" th:text="${day.getNumber()}" th:class="'day-num'">
+                        </div>
 
-            <div th:if="${day.getTasks() != null}" th:each="task : ${day.getTasks()}">
-                <p th:text="${task.getTitle()}"></p>
-            </div>
-        </td>
-    </tr>
-</table>
+                        <div th:if="${day.getTasks() != null}" th:each="task : ${day.getTasks()}">
+                            <p th:text="${task.getTitle()}"></p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

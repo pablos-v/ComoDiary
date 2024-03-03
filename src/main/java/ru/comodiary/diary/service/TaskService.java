@@ -3,7 +3,6 @@ package ru.comodiary.diary.service;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.comodiary.diary.model.Day;
 import ru.comodiary.diary.model.Month;
 import ru.comodiary.diary.model.Task;
 import ru.comodiary.diary.model.TaskStatus;
@@ -14,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,62 +26,48 @@ public class TaskService {
     @PostConstruct
     private void fakeData() {
         Task one = new Task("first", "ftest", LocalDate.of(2024, 3, 1), TaskStatus.NOT_COMPLETED);
-        Task two = new Task("second", "stest", LocalDate.of(2024, 3, 2), TaskStatus.NOT_COMPLETED);
-        Task three = new Task("third", "thtest", LocalDate.of(2024, 3, 31), TaskStatus.NOT_COMPLETED);
-        Task four = new Task("four", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
+        Task two = new Task("get bags", "stest", LocalDate.of(2024, 3, 2), TaskStatus.NOT_COMPLETED);
+        Task three = new Task("buy food", "thtest", LocalDate.of(2024, 3, 31), TaskStatus.NOT_COMPLETED);
+        Task four = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 4), TaskStatus.NOT_COMPLETED);
+        Task four2 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
+        Task four3 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
+        Task four4 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
+        Task four44 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
+        Task four5 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
+        Task four7 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 5), TaskStatus.NOT_COMPLETED);
+        Task four6 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 6), TaskStatus.NOT_COMPLETED);
         addOrUpdateTask(one);
         addOrUpdateTask(two);
         addOrUpdateTask(three);
         addOrUpdateTask(four);
+        addOrUpdateTask(four2);
+        addOrUpdateTask(four3);
+        addOrUpdateTask(four44);
+        addOrUpdateTask(four4);
+        addOrUpdateTask(four5);
+        addOrUpdateTask(four6);
+        addOrUpdateTask(four7);
     }
 
-    // пакую в недели-дни-таски
+
+    public String getMonthName(String date) {
+        int month = convertStringToLocalDate(date).getMonthValue();
+        return String.format("Календарь задач на %s", monthToRus(month));
+    }
+
     public Month getAllTasksForMonth(String date) {
         // берём первый день
         LocalDate startDate = convertStringToLocalDate(date).with(TemporalAdjusters.firstDayOfMonth());
         // берём последний день
         LocalDate lastDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
-
+        // нужно для вывода номеров дат с корректного дня недели
         DayOfWeek startDayOfWeek = startDate.getDayOfWeek();
         int diffToMonday = startDayOfWeek.compareTo(DayOfWeek.MONDAY);
-//        int counter = 1;
 
         List<Task> allTasksOfMonth = repository.findByExpireDateBetween(startDate, lastDate);
 
-//        List<List<Day>> month = new ArrayList<>();
-//        for (int w = 0; w < 5; w++) {
-//            List<Day> week = new ArrayList<>();
-//            for (int d = 0; d < 7; d++) {
-//                Day day;
-//                // вью будет с понедельника, чтобы все ячейки были заполнены,
-//                // проверяем с какого дня стартует месяц и добиваем пустые дни
-//                if (diffToMonday > 0) {
-//                    day = new Day();
-//                    diffToMonday--;
-//                } else if (counter <= lastDate.getDayOfMonth()) {
-//                    day = new Day(counter++);
-//                    // всунуть в день его таски
-//                } else day = new Day();
-//                week.add(day);
-//            }
-//            month.add(week);
-//        }
-
-        Month month = new Month(allTasksOfMonth, diffToMonday, lastDate.getDayOfMonth());
-
-
-
-        return month;
+        return new Month(allTasksOfMonth, diffToMonday, lastDate.getDayOfMonth());
     }
-
-//    public List<Task> getAllTasksForMonth(String date) {
-//        // берём первый день
-//        LocalDate startDate = convertStringToLocalDate(date).with(TemporalAdjusters.firstDayOfMonth());
-//        // берём последний день
-//        LocalDate lastDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
-//
-//        return repository.findByExpireDateBetween(startDate, lastDate);
-//    }
 
     public List<Task> getAllTasksSomeDays(String date) {
         LocalDate startDate = convertStringToLocalDate(date);
@@ -104,6 +88,7 @@ public class TaskService {
     }
 
     // TODO тестить как с ним работает PUT
+
     public Task addOrUpdateTask(Task task) {
         return repository.save(task);
     }
@@ -118,5 +103,23 @@ public class TaskService {
     private LocalDate convertStringToLocalDate(String date) {
         if (Objects.equals(date, "nowDate")) return LocalDate.now();
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    private String monthToRus(int month) {
+        return switch (month) {
+            case 1 -> "Январь";
+            case 2 -> "Февраль";
+            case 3 -> "Март";
+            case 4 -> "Апрель";
+            case 5 -> "Май";
+            case 6 -> "Июнь";
+            case 7 -> "Июль";
+            case 8 -> "Август";
+            case 9 -> "Сентябрь";
+            case 10 -> "Октябрь";
+            case 11 -> "Ноябрь";
+            case 12 -> "Декабрь";
+            default -> "месяц";
+        };
     }
 }
