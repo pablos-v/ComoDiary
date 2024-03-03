@@ -17,3 +17,4 @@ public class Day {
         this.tasks = new ArrayList<>();
     }
 }
+
