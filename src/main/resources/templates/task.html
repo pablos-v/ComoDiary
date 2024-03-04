@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +11,31 @@
 <body>
 <menu>
     <form action="/day" method="GET">
-        <p>Выберите начальную дату: <input type="date" name="date">
+        <p>Выберите дату: <input type="date" name="date">
             <input type="submit" value="Показать задачи"></p>
     </form>
 
 </menu>
 
-<p th:text="${task.toString()}"></p>
+<h3>Добавление задачи</h3>
+<form action="/task" method="POST">
+    <label for="title">Наименование задачи:</label>
+    <input type="text" id="title" name="title" required>
+    <label for="description">Описание задачи:</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <label for="expire">Дата:</label>
+    <input type="date" id="expire" name="expireDate" required>
+
+    <label for="status">Статус:</label>
+    <select id="status" name="status">
+        <option value="0">Не выполнена</option>
+        <option value="1">Выполнена</option>
+        <option value="-1">Просрочена</option>
+    </select>
+
+    <input type="submit" value="Создать">
+</form>
 
 </body>
 </html>

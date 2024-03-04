@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @PostConstruct
+//    @PostConstruct
     public void createUsers() {
         userRepository.save(new User("user", "user", "user"));
 //        userRepository.save(new User("admin", "admin", "admin"));

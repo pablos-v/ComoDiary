@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Data
@@ -20,7 +21,6 @@ public class Task {
     @Column(name = "title", nullable = false, length = 150)
     private String title;
 
-    @NonNull
     @Column(name = "description", nullable = false, length = 500)
     private String description;
 
@@ -30,11 +30,27 @@ public class Task {
     @Column(name = "status")
     private TaskStatus status;
 
-    // for tests
-    public Task(String title, @NonNull String description, LocalDate expireDate, TaskStatus status) {
+    // for dev
+    public Task(String title, String description, LocalDate expireDate, TaskStatus status) {
         this.title = title;
         this.description = description;
         this.expireDate = expireDate;
         this.status = status;
+    }
+
+    // for prod
+    public Task(String title, String description, String expireDate, String status) {
+        this.title = title;
+        this.description = description;
+        this.expireDate = LocalDate.parse(expireDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.status = stringToStatus(status);
+    }
+
+    private TaskStatus stringToStatus(String s) {
+        return switch (s) {
+            case "1" -> TaskStatus.COMPLETED;
+            case "-1" -> TaskStatus.EXPIRED;
+            default -> TaskStatus.NOT_COMPLETED;
+        };
     }
 }

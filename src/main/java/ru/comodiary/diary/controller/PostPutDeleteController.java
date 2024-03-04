@@ -2,6 +2,7 @@ package ru.comodiary.diary.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.comodiary.diary.model.Task;
 import ru.comodiary.diary.service.TaskService;
@@ -10,13 +11,18 @@ import ru.comodiary.diary.service.TaskService;
 @AllArgsConstructor
 public class PostPutDeleteController {
 
-    TaskService service;
+    private final TaskService service;
 
-    // TODO куда потом редирект? сунуть в модель то что вернулось и открыть таск?
-    // TODO нужны ли ResponseEntity? как их навесить?
-    @PostMapping("/")
-    public void addNewTask(@RequestBody Task task) {
+    @PostMapping("/task")
+    public String addNewTask(@RequestParam("title") String title,
+                             @RequestParam("description") String description,
+                             @RequestParam("expireDate") String expireDate,
+                             @RequestParam("status") String status,
+                             Model model) {
+        Task task = new Task(title, description, expireDate, status);
         service.addOrUpdateTask(task);
+        model.addAttribute("day", service.getAllDayTasks(task.getExpireDate().toString()));
+        return "day";
     }
 
     // TODO  куда потом редирект? сунуть в модель то что вернулось и открыть таск?

@@ -2,20 +2,22 @@ server:
   port: 8181
 spring:
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:file:./data/mydb
+#    url: jdbc:h2:mem:test
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  #    url: jdbc:postgresql://localhost:5432/postgres
+  #    username: sa
+  #    password:
+  #    driverClassName: org.postgresql.Driver
 
   #  security:
   #    oauth2:
   #      resourceserver:
   #        jwt:
   #          issuer-uri: http://localhost:8080/realms/master
-  #    driverClassName: org.postgresql.Driver
-  #    url: jdbc:postgresql://localhost:5432/postgres
-  #    username: sa
-  #    password:
+
   jpa:
     show-sql: true
     hibernate:

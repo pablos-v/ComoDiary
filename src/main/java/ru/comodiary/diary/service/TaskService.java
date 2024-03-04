@@ -23,11 +23,9 @@ import java.util.Objects;
 @Service
 public class TaskService {
 
-    private final String formate = "yyyy-MM-dd";
-
     private final TaskRepository repository;
 
-    @PostConstruct
+    //    @PostConstruct
     private void fakeData() {
         Task one = new Task("first", "ftest", LocalDate.of(2024, 3, 1), TaskStatus.NOT_COMPLETED);
         Task two = new Task("get bags", "stest", LocalDate.of(2024, 3, 2), TaskStatus.NOT_COMPLETED);
@@ -55,8 +53,10 @@ public class TaskService {
 
 
     public String getMonthName(String date) {
-        int month = convertStringToLocalDate(date).getMonthValue();
-        return String.format("Календарь задач на %s", monthToRus(month));
+        LocalDate localDate = convertStringToLocalDate(date);
+        int month = localDate.getMonthValue();
+        int year = localDate.getYear();
+        return String.format("Календарь задач на %s %d года", monthToRus(month), year);
     }
 
     public Month getAllTasksForMonth(String date) {
@@ -130,5 +130,13 @@ public class TaskService {
 
     public String getDayName(String date) {
         return String.format("Список задач на %s", DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(convertStringToLocalDate(date)));
+    }
+
+    public List<Task> getAllTasksBySearch(String search) {
+        return repository.findByTitleContainingOrDescriptionContaining(search, search);
+    }
+
+    public List<Task> getAllExpiredTasks() {
+        return repository.findByStatus(TaskStatus.EXPIRED);
     }
 }

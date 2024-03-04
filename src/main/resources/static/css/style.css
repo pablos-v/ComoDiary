@@ -67,12 +67,24 @@ td {
     border: 1px solid black;
     height: 120px;
     text-align: center; /* Центрируем содержимое по центру ячейки */
+    line-height: 0.5; /* Устанавливаем расстояние между строками */
 }
 
 th {
     padding: 5px;
 }
-
+.expired-indicator{
+    font-weight: bold;
+    text-decoration: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: darkred;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
 .nav-buttons {
     margin-bottom: 5px;
     text-align: center;
@@ -94,9 +106,63 @@ th {
     content: "<<<";
     margin-right: 5px;
 }
-
 .arrow-button.right::after {
     color: #ffffff;
     content: ">>>";
     margin-left: 5px;
+}
+
+
+/*----------------*/
+
+
+menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: lightgray;
+    padding: 10px;
+}
+
+menu form,
+menu p {
+    margin: 0;
+}
+
+input[type="date"],
+input[type="text"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button-add {
+    width: 30px;
+    height: 30px;
+    background-color: #007bff;
+    font-size: xxx-large;
+    color: #ffffff;
+    content: "+++";
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 10px 10px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
 }
