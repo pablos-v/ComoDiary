@@ -18,5 +18,9 @@ public class Day {
         this.number = number;
         this.tasks = new ArrayList<>();
     }
+    public Day(List<Task> tasks, LocalDate date){
+        this.tasks=tasks;
+        this.date = date;
+    }
 }
 

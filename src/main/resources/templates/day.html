@@ -17,8 +17,18 @@
 
 </menu>
 
+<div>
+    <h2 th:text="${dayName}">Календарь задач на день</h2>
+    <div class="nav-buttons">
+        <a th:href="@{'/day?date=' + ${day.getDate().minusDays(1).toString()}}"
+           th:class="'arrow-button left'"> </a>
+        <a th:href="@{'/day?date=' + ${day.getDate().plusDays(1).toString()}}"
+           th:class="'arrow-button right'"> </a>
+    </div>
+</div>
+
 <ol>
-    <li th:each="task : ${tasks}">
+    <li th:each="task : ${day.getTasks()}">
         <div th:switch="${task.getStatus().toString()}">
             <!--зачеркнуть выполненные, подсветить просроченные-->
             <a th:href="@{'/task/' + ${task.getId()}}">

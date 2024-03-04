@@ -2,7 +2,9 @@ package ru.comodiary.diary.service;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.comodiary.diary.model.Day;
 import ru.comodiary.diary.model.Month;
 import ru.comodiary.diary.model.Task;
 import ru.comodiary.diary.model.TaskStatus;
@@ -12,16 +14,18 @@ import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 
 import java.time.LocalDate;
+import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Objects;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class TaskService {
-    final int DAYS_VIEW = 4;
 
-    private TaskRepository repository;
+    private final String formate = "yyyy-MM-dd";
+
+    private final TaskRepository repository;
 
     @PostConstruct
     private void fakeData() {
@@ -69,13 +73,14 @@ public class TaskService {
         return new Month(allTasksOfMonth, diffToMonday, lastDate);
     }
 
-    public List<Task> getAllTasksSomeDays(String date) {
+    public List<Task> getAllTasksThreeDays(String date) {
         LocalDate startDate = convertStringToLocalDate(date);
-        return repository.findByExpireDateBetween(startDate, startDate.plusDays(DAYS_VIEW));
+        return repository.findByExpireDateBetween(startDate, startDate.plusDays(3));
     }
 
-    public List<Task> getAllDayTasks(String date) {
-        return repository.findByExpireDate(convertStringToLocalDate(date));
+    public Day getAllDayTasks(String date) {
+        LocalDate localDate = convertStringToLocalDate(date);
+        return new Day(repository.findByExpireDate(localDate), localDate);
     }
 
     public List<Task> getAllTasksFromDate(String date) {
@@ -121,5 +126,9 @@ public class TaskService {
             case 12 -> "Декабрь";
             default -> "месяц";
         };
+    }
+
+    public String getDayName(String date) {
+        return String.format("Список задач на %s", DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(convertStringToLocalDate(date)));
     }
 }

@@ -26,13 +26,14 @@ public class ViewController {
 
     @GetMapping("/4_days")
     public String viewFourDays(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
-        model.addAttribute("tasks", service.getAllTasksSomeDays(date));
+        model.addAttribute("tasks", service.getAllTasksThreeDays(date));
         return "4_days";
     }
 
     @GetMapping("/day")
     public String viewDay(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
-        model.addAttribute("tasks", service.getAllDayTasks(date));
+        model.addAttribute("day", service.getAllDayTasks(date));
+        model.addAttribute("dayName", service.getDayName(date));
         return "day";
     }
 
