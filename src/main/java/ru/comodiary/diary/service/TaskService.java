@@ -33,9 +33,9 @@ public class TaskService {
         Task four3 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
         Task four4 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
         Task four44 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
-        Task four5 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 3), TaskStatus.NOT_COMPLETED);
-        Task four7 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 5), TaskStatus.NOT_COMPLETED);
-        Task four6 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 6), TaskStatus.NOT_COMPLETED);
+        Task four5 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 5), TaskStatus.NOT_COMPLETED);
+        Task four7 = new Task("go to the forest to gather mushrooms", "fourtest", LocalDate.of(2024, 4, 5), TaskStatus.COMPLETED);
+        Task four6 = new Task("ther mushrooms", "fourtest", LocalDate.of(2024, 4, 5), TaskStatus.EXPIRED);
         addOrUpdateTask(one);
         addOrUpdateTask(two);
         addOrUpdateTask(three);
@@ -66,7 +66,7 @@ public class TaskService {
 
         List<Task> allTasksOfMonth = repository.findByExpireDateBetween(startDate, lastDate);
 
-        return new Month(allTasksOfMonth, diffToMonday, lastDate.getDayOfMonth());
+        return new Month(allTasksOfMonth, diffToMonday, lastDate);
     }
 
     public List<Task> getAllTasksSomeDays(String date) {

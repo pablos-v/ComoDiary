@@ -19,8 +19,8 @@ public class ViewController {
     // по умолчанию выводит представление месяц с текущей даты, если в форме была введена дата-то с указанной
     @GetMapping("/")
     public String viewMonth(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
-        model.addAttribute("tasks", service.getAllTasksForMonth(date));
-        model.addAttribute("month", service.getMonthName(date));
+        model.addAttribute("month", service.getAllTasksForMonth(date));
+        model.addAttribute("monthName", service.getMonthName(date));
         return "month";
     }
 

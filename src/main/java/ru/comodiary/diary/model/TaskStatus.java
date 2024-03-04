@@ -9,7 +9,22 @@ package ru.comodiary.diary.model;
  */
 public enum TaskStatus {
 
-    COMPLETED,
-    NOT_COMPLETED,
-    EXPIRED
+    COMPLETED {
+        @Override
+        public String toString() {
+            return "DONE";
+        }
+    },
+    NOT_COMPLETED {
+        @Override
+        public String toString() {
+            return "SET";
+        }
+    },
+    EXPIRED {
+        @Override
+        public String toString() {
+            return "EXPIRED";
+        }
+    }
 }

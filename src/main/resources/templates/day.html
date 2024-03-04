@@ -2,9 +2,36 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
+    <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
+    <title>Задачи на день</title>
 </head>
 <body>
+<menu>
+    <form action="/day" method="GET">
+        <p>Выберите начальную дату: <input type="date" name="date">
+            <input type="submit" value="Показать задачи"></p>
+    </form>
 
+</menu>
+
+<ol>
+    <li th:each="task : ${tasks}">
+        <div th:switch="${task.getStatus().toString()}">
+            <!--зачеркнуть выполненные, подсветить просроченные-->
+            <a th:href="@{'/task/' + ${task.getId()}}">
+                <p th:case="${'SET'}" th:class="'month-task-title'"
+                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+                <p th:case="${'DONE'}" th:class="'month-task-title-done'"
+                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+                <p th:case="${'EXPIRED'}" th:class="'month-task-title-expired'"
+                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+            </a>
+
+        </div>
+    </li>
+</ol>
 </body>
 </html>
