@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.comodiary.diary.model.Task;
 import ru.comodiary.diary.service.TaskService;
+
+import java.util.Objects;
 
 @Controller
 @AllArgsConstructor
@@ -25,15 +28,29 @@ public class PostPutDeleteController {
         return "day";
     }
 
-    // TODO  куда потом редирект? сунуть в модель то что вернулось и открыть таск?
-    @PutMapping("/task/{id}")
-    public void updateTask(@PathVariable long id) {
-        service.addOrUpdateTask(service.getTaskById(id));
+    // фактически это PUT, но HTML формы поддерживают только 2 метода GET и POST... ссыль в литературе есть
+    @PostMapping("/task/{id}")
+    public String updateTask(@PathVariable Long id, @RequestParam("title") String title,
+                             @RequestParam("description") String description,
+                             @RequestParam("expireDate") String expireDate,
+                             @RequestParam(name = "status", defaultValue = "no") String status,
+                             Model model) {
+        Task task = service.getTaskById(id);
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setExpireDate(service.convertStringToLocalDate(expireDate));
+        if (!status.equals("no")) task.setStringStatus(status);
+
+        service.addOrUpdateTask(task);
+        model.addAttribute("day", service.getAllDayTasks(task.getExpireDate().toString()));
+        return "day";
     }
 
-    // TODO сообщить что задача с тайтлом таким-то удалена и редирект куда?
-    @DeleteMapping("/task/{id}")
-    public void deleteById(@PathVariable long id) {
-        service.deleteTaskById(id);
+    // удаляет задачу и редиректит обратно в день
+    @PostMapping("/delete/{id}")
+    public ModelAndView deleteById(@PathVariable Long id, Model model) {
+        Task task = service.deleteTaskById(id);
+        model.addAttribute("day", service.getAllDayTasks(task.getExpireDate().toString()));
+        return new ModelAndView("redirect:" + "/day?date=" + task.getExpireDate());
     }
 }

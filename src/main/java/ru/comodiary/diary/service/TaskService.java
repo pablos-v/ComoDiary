@@ -87,7 +87,7 @@ public class TaskService {
         return repository.findByExpireDateGreaterThanEqual(convertStringToLocalDate(date));
     }
 
-    public Task getTaskById(long id) {
+    public Task getTaskById(Long id) {
         return repository.findById(id).orElseThrow(()
                 -> new RuntimeException(String.format("Task with id = %d is not found", id)));
     }
@@ -98,14 +98,14 @@ public class TaskService {
         return repository.save(task);
     }
 
-    public Task deleteTaskById(long id) {
+    public Task deleteTaskById(Long id) {
         // не нужно проверять на экзист, это сделает getTaskById(id)
         Task result = getTaskById(id);
         repository.deleteById(id);
         return result;
     }
 
-    private LocalDate convertStringToLocalDate(String date) {
+    public LocalDate convertStringToLocalDate(String date) {
         if (Objects.equals(date, "nowDate")) return LocalDate.now();
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }

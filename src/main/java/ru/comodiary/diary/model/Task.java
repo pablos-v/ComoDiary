@@ -16,7 +16,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "title", nullable = false, length = 150)
     private String title;
@@ -43,6 +43,10 @@ public class Task {
         this.title = title;
         this.description = description;
         this.expireDate = LocalDate.parse(expireDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.status = stringToStatus(status);
+    }
+
+    public void setStringStatus(String status){
         this.status = stringToStatus(status);
     }
 

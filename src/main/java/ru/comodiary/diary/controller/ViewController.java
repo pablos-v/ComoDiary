@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.comodiary.diary.model.Task;
+import ru.comodiary.diary.model.TaskStatus;
 import ru.comodiary.diary.service.TaskService;
 
 import java.time.LocalDate;
@@ -43,6 +45,7 @@ public class ViewController {
         model.addAttribute("tasks", service.getAllTasksBySearch(search));
         return "list";
     }
+
     @GetMapping("/expired")
     public String viewListOfExpiredTasks(Model model) {
         model.addAttribute("tasks", service.getAllExpiredTasks());
@@ -50,13 +53,18 @@ public class ViewController {
     }
 
     @GetMapping("/task/{id}")
-    public String viewTask(Model model, @PathVariable long id) {
+    public String viewTask(Model model, @PathVariable Long id) {
         model.addAttribute("task", service.getTaskById(id));
         return "task";
     }
 
+    // for new task
     @GetMapping("/task")
-    public String viewAddTask() {
+    public String viewAddTask(Model model) {
+        Task task = new Task();
+        task.setExpireDate(LocalDate.now());
+        task.setStatus(TaskStatus.NOT_COMPLETED);
+        model.addAttribute("task", task);
         return "task";
     }
 }

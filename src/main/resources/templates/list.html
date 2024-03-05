@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
     <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
+    <script src="/js/script.js"></script>
     <title>Задачи на 4 дня</title>
 </head>
 <body>
@@ -14,7 +15,23 @@
         <p>Выберите начальную дату: <input type="date" name="date">
             <input type="submit" value="Показать задачи"></p>
     </form>
+    <a th:href="@{'/task'}" th:class="'button-add'">+</a>
 
+    <p> Вид:
+        <select id="view-filter" title="view selector" onchange="setFilter()">
+            <option value="">Месяц</option>
+            <option value="3_days">3 дня</option>
+            <option value="day">День</option>
+        </select></p>
+
+    <a th:if="${expired != null}" th:text="${expired.size()}" th:class="'expired-indicator'"
+       th:href="@{'/expired'}">
+    </a>
+
+    <form action="/list" method="get">
+        <input type="text" name="search" placeholder="введите запрос">
+        <input type="submit" value="Поиск">
+    </form>
 </menu>
 
 <ul>
