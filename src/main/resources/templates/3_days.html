@@ -6,17 +6,23 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
     <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
-    <title>Задачи на 4 дня</title>
+    <script src="/js/script.js"></script>
+    <title>Задачи на 3 дня</title>
 </head>
 <body>
-<menu>
-<form action="/4_days" method="GET">
-    <p>Выберите начальную дату: <input type="date" name="date">
-        <input type="submit" value="Показать задачи"></p>
-</form>
-
-</menu>
-
+<nav th:with="pageToGo='/3_days'">
+    <!-- Включение меню -->
+    <div th:replace="menu :: menu" th:fragment="menu"></div>
+</nav>
+<div>
+    <h2>Задачи на 3 дня</h2>
+    <div class="nav-buttons">
+        <a th:href="@{'/3_days?date=' + ${threeDays.getFirstDate().minusDays(3).toString()}}"
+           th:class="'arrow-button left'"> </a>
+        <a th:href="@{'/3_days?date=' + ${threeDays.getFirstDate().plusDays(3).toString()}}"
+           th:class="'arrow-button right'"> </a>
+    </div>
+</div>
 
 </body>
 </html>

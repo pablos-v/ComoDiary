@@ -21,15 +21,16 @@ public class ViewController {
     // по умолчанию выводит представление месяц с текущей даты, если в форме была введена дата-то с указанной
     @GetMapping("/")
     public String viewMonth(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
-        model.addAttribute("expired", service.getAllExpiredTasks());
         model.addAttribute("month", service.getAllTasksForMonth(date));
         model.addAttribute("monthName", service.getMonthName(date));
+        model.addAttribute("expired", service.getAllExpiredTasks());
         return "month";
     }
 
     @GetMapping("/3_days")
     public String viewFourDays(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
-        model.addAttribute("tasks", service.getAllTasksThreeDays(date));
+        model.addAttribute("threeDays", service.getAllTasksThreeDays(date));
+        model.addAttribute("expired", service.getAllExpiredTasks());
         return "3_days";
     }
 
@@ -37,12 +38,14 @@ public class ViewController {
     public String viewDay(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("day", service.getAllDayTasks(date));
         model.addAttribute("dayName", service.getDayName(date));
+        model.addAttribute("expired", service.getAllExpiredTasks());
         return "day";
     }
 
     @GetMapping("/list")
     public String viewList(Model model, @RequestParam(value = "search") String search) {
         model.addAttribute("tasks", service.getAllTasksBySearch(search));
+        model.addAttribute("expired", service.getAllExpiredTasks());
         return "list";
     }
 
@@ -55,6 +58,7 @@ public class ViewController {
     @GetMapping("/task/{id}")
     public String viewTask(Model model, @PathVariable Long id) {
         model.addAttribute("task", service.getTaskById(id));
+        model.addAttribute("expired", service.getAllExpiredTasks());
         return "task";
     }
 

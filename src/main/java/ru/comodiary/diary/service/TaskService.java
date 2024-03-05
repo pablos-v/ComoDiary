@@ -4,10 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.comodiary.diary.model.Day;
-import ru.comodiary.diary.model.Month;
-import ru.comodiary.diary.model.Task;
-import ru.comodiary.diary.model.TaskStatus;
+import ru.comodiary.diary.model.*;
 import ru.comodiary.diary.repository.TaskRepository;
 
 import java.time.DayOfWeek;
@@ -73,9 +70,9 @@ public class TaskService {
         return new Month(allTasksOfMonth, diffToMonday, lastDate);
     }
 
-    public List<Task> getAllTasksThreeDays(String date) {
+    public ThreeDays getAllTasksThreeDays(String date) {
         LocalDate startDate = convertStringToLocalDate(date);
-        return repository.findByExpireDateBetween(startDate, startDate.plusDays(3));
+        return new ThreeDays(repository.findByExpireDateBetween(startDate, startDate.plusDays(3)), startDate);
     }
 
     public Day getAllDayTasks(String date) {

@@ -10,30 +10,10 @@
     <title>Календарь задач на месяц</title>
 </head>
 <body>
-<menu>
-    <form action="/" method="GET">
-        <p>Выберите дату: <input type="date" name="date">
-            <input type="submit" value="Показать задачи"></p>
-    </form>
-
-    <a th:href="@{'/task'}" th:class="'button-add'">+</a>
-
-    <p> Вид:
-        <select id="view-filter" title="view selector" onchange="setFilter()">
-            <option value="">Месяц</option>
-            <option value="3_days">3 дня</option>
-            <option value="day">День</option>
-        </select></p>
-
-    <a th:if="${expired != null}" th:text="${expired.size()}" th:class="'expired-indicator'"
-       th:href="@{'/expired'}">
-    </a>
-
-    <form action="/list" method="get">
-        <input type="text" name="search" placeholder="введите запрос">
-        <input type="submit" value="Поиск">
-    </form>
-</menu>
+<nav th:with="pageToGo='/'">
+    <!-- Включение меню -->
+    <div th:replace="menu :: menu" th:fragment="menu"></div>
+</nav>
 
 <div>
 
