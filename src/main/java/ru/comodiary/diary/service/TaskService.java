@@ -22,7 +22,11 @@ public class TaskService {
 
     private final TaskRepository repository;
 
-    //    @PostConstruct
+//        @PostConstruct
+    private void fdata(){
+        Task four6 = new Task("ther mushrooms", "fourtest", LocalDate.of(2024, 4, 5), TaskStatus.EXPIRED);
+        addOrUpdateTask(four6);
+    }
     private void fakeData() {
         Task one = new Task("first", "ftest", LocalDate.of(2024, 3, 1), TaskStatus.NOT_COMPLETED);
         Task two = new Task("get bags", "stest", LocalDate.of(2024, 3, 2), TaskStatus.NOT_COMPLETED);
@@ -89,8 +93,6 @@ public class TaskService {
                 -> new RuntimeException(String.format("Task with id = %d is not found", id)));
     }
 
-    // TODO тестить как с ним работает PUT
-
     public Task addOrUpdateTask(Task task) {
         return repository.save(task);
     }
@@ -135,5 +137,12 @@ public class TaskService {
 
     public List<Task> getAllExpiredTasks() {
         return repository.findByStatus(TaskStatus.EXPIRED);
+    }
+
+    public Task changeStatus(Long id) {
+        Task task = getTaskById(id);
+        task.setStatus(task.getStatus() == TaskStatus.COMPLETED ? TaskStatus.NOT_COMPLETED : TaskStatus.COMPLETED);
+        repository.save(task);
+        return task;
     }
 }

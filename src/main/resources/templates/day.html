@@ -30,10 +30,20 @@
         <div th:switch="${task.getStatus().toString()}">
             <!--зачеркнуть выполненные, подсветить просроченные-->
             <a th:href="@{'/task/' + ${task.getId()}}">
-                <p th:case="${'SET'}" th:class="'month-task-title'"
-                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
-                <p th:case="${'DONE'}" th:class="'month-task-title-done'"
-                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+                <div th:case="${'SET'}" >
+                    <p th:class="'month-task-title'"
+                       th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+                    <form th:action="'/change-status/go-to-day/' +${task.getId()}" method="POST">
+                        <input type="submit" value="Выполнено">
+                    </form>
+                </div>
+                <div th:case="${'DONE'}" >
+                    <p th:class="'month-task-title-done'"
+                       th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+                    <form th:action="'/change-status/go-to-day/' +${task.getId()}" method="POST">
+                        <input type="submit" value="Не выполнено">
+                    </form>
+                </div>
                 <p th:case="${'EXPIRED'}" th:class="'month-task-title-expired'"
                    th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
             </a>

@@ -14,10 +14,13 @@
     <!-- Включение меню -->
     <div th:replace="menu :: menu" th:fragment="menu"></div>
 </nav>
-
-    <h3 th:if="${task.getId() != null}"
-        th:text="${task.getStatus().toString() == 'SET'} ? 'Задача не выполнена' : 'Задача выполнена'">Задача</h3>
-    <h3 th:if="${task.getId() == null}" th:text="'Новая задача'">Задача</h3>
+<!--отображение статуса-->
+<div th:if="${task.getId() != null}" th:switch="${task.getStatus().toString()}">
+    <h3 th:case="${'SET'}" th:text="'Задача не выполнена'">Задача</h3>
+    <h3 th:case="${'DONE'}" th:text="'Задача выполнена'">Задача</h3>
+    <h3 th:case="${'EXPIRED'}" th:text="'Задача просрочена'">Задача</h3>
+</div>
+<h3 th:if="${task.getId() == null}" th:text="'Новая задача'">Задача</h3>
 
 <form th:action="${task.getId() != null} ? '/task/' + ${task.getId()} : '/task'" method="POST">
     <label for="title">Название задачи:</label>
@@ -28,11 +31,6 @@
     <label for="expire">Дата:</label>
     <input type="date" id="expire" name="expireDate" th:value="${task.getExpireDate().toString()}">
 
-    <label for="status">Статус:</label>
-    <select th:if="${task.getId() == null}" id="status" name="status">
-        <option selected value="0">Не выполнена</option>
-        <option value="1">Выполнена</option>
-    </select>
     <!--  показать если работаем с уже существующей задачей -->
     <div th:if="${task.getId() != null}">
         <p th:text="${task.getStatus()}"></p>
@@ -47,6 +45,7 @@
 <form th:if="${task.getId() != null}" th:action="'/delete/' +${task.getId()}" method="POST">
     <input type="submit" value="Удалить">
 </form>
+<input type="submit" value="Отмена" onclick="history.back()">
 
 </body>
 </html>
