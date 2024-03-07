@@ -5,6 +5,16 @@
     margin-bottom: 3px;
 }
 
+.day-row{
+    margin-left: 100px;
+}
+.day-row div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
 .day-cell {
     position: relative;
 }
@@ -73,13 +83,20 @@ td {
 th {
     padding: 5px;
 }
+
+.in-day-cell{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .expired-indicator{
     font-weight: bold;
     text-decoration: none;
     width: 26px;
     height: 26px;
     border-radius: 50%;
-    background-color: darkred;
+    background-color: #cf0c0f;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -168,4 +185,9 @@ select {
     display: flex;
     justify-content: center; /* Горизонтальное центрирование */
     align-items: center; /* Вертикальное центрирование */
+}
+
+.table-container{
+    width: 50%;
+    margin: 0 auto;
 }

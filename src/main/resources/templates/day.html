@@ -16,7 +16,7 @@
 </nav>
 
 <div>
-    <h2 th:text="${dayName}">Список задач на день</h2>
+    <h2>Список задач на день</h2>
     <div class="nav-buttons">
         <a th:href="@{'/day?date=' + ${day.getDate().minusDays(1).toString()}}"
            th:class="'arrow-button left'"> </a>
@@ -26,49 +26,39 @@
     </div>
 </div>
 
-<ol>
-    <li th:each="task : ${day.getTasks()}">
-        <!--зачеркнуть выполненные, подсветить просроченные-->
-        <div>
-            <a th:href="@{'/task/' + ${task.getId()}}">
-                <p th:if="${task.getStatus().toString() != 'EXPIRED'}"
-                   th:class="${task.getStatus().toString() == 'SET'} ? 'month-task-title' : 'month-task-title-done'"
-                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+<table class="table-container">
+    <thead class="thead-bg-color">
+    <tr>
+        <th th:text="${dayName}"></th>
+    </tr>
+    </thead>
+    <tbody>
 
-                <p th:if="${task.getStatus().toString() == 'EXPIRED'}"
-                   class="month-task-title-expired"
-                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
-            </a>
-            <form th:if="${task.getStatus().toString() != 'EXPIRED'}" th:action="'/change-status'" method="POST">
-                <input type="hidden" name="id" th:value="${task.getId()}">
-                <input type="hidden" name="whereTo" value="day">
-                <input type="submit" th:value="${task.getStatus().toString() == 'SET'} ? 'Выполнено' : 'Не выполнено'">
-            </form>
-        </div>
+    <tr th:each="task : ${day.getTasks()}">
+        <td>
+            <div class="in-day-cell">
+                <a th:href="@{'/task/' + ${task.getId()}}">
+                    <p th:if="${task.getStatus().toString() != 'EXPIRED'}"
+                       th:class="${task.getStatus().toString() == 'SET'} ? 'month-task-title' : 'month-task-title-done'"
+                       th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
 
-        <!--                <div th:switch="${task.getStatus().toString()}">-->
-        <!--                    &lt;!&ndash;зачеркнуть выполненные, подсветить просроченные&ndash;&gt;-->
-        <!--                    <a th:href="@{'/task/' + ${task.getId()}}">-->
-        <!--                <div th:case="${'SET'}" >-->
-        <!--                    <p th:class="'month-task-title'"-->
-        <!--                       th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>-->
-        <!--                    <form th:action="'/change-status/go-to-day/' +${task.getId()}" method="POST">-->
-        <!--                        <input type="submit" value="Выполнено">-->
-        <!--                    </form>-->
-        <!--                </div>-->
-        <!--                <div th:case="${'DONE'}" >-->
-        <!--                    <p th:class="'month-task-title-done'"-->
-        <!--                       th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>-->
-        <!--                    <form th:action="'/change-status/go-to-day/' +${task.getId()}" method="POST">-->
-        <!--                        <input type="submit" value="Не выполнено">-->
-        <!--                    </form>-->
-        <!--                </div>-->
-        <!--                <p th:case="${'EXPIRED'}" th:class="'month-task-title-expired'"-->
-        <!--                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>-->
-        <!--            </a>-->
+                    <p th:if="${task.getStatus().toString() == 'EXPIRED'}"
+                       class="month-task-title-expired"
+                       th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+                </a>
+                <form th:if="${task.getStatus().toString() != 'EXPIRED'}" th:action="'/change-status'" method="POST">
+                    <input type="hidden" name="id" th:value="${task.getId()}">
+                    <input type="hidden" name="whereTo" value="day">
+                    <input type="submit"
+                           th:value="${task.getStatus().toString() == 'SET'} ? 'Выполнено' : 'Не выполнено'">
+                </form>
+            </div>
+        </td>
 
-        <!--        </div>-->
-    </li>
-</ol>
+    </tr>
+
+    </tbody>
+</table>
+
 </body>
 </html>

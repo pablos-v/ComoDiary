@@ -10,8 +10,10 @@ import java.time.format.DateTimeFormatter;
 
 import java.time.LocalDate;
 import java.time.format.FormatStyle;
+import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -127,7 +129,12 @@ public class TaskService {
     }
 
     public String getDayName(String date) {
-        return String.format("Список задач на %s", DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(convertStringToLocalDate(date)));
+        LocalDate localDate = convertStringToLocalDate(date);
+        String dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(localDate);
+        Locale ru = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
+        String weekDay = localDate.getDayOfWeek().getDisplayName(TextStyle.FULL, ru);
+
+        return String.format("%s,  %s", dateFormat, weekDay);
     }
 
     public List<Task> getAllTasksBySearch(String search) {
