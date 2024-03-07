@@ -19,6 +19,7 @@
     <div class="nav-buttons">
         <a th:href="@{'/3_days?date=' + ${threeDays.getFirstDate().minusDays(3).toString()}}"
            th:class="'arrow-button left'"> </a>
+        <input type="submit" value="Назад" onclick="history.back()" class="arrow-button">
         <a th:href="@{'/3_days?date=' + ${threeDays.getFirstDate().plusDays(3).toString()}}"
            th:class="'arrow-button right'"> </a>
     </div>

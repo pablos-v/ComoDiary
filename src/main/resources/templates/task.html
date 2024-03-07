@@ -21,7 +21,7 @@
     <h3 th:case="${'EXPIRED'}" th:text="'Задача просрочена'">Задача</h3>
 </div>
 <h3 th:if="${task.getId() == null}" th:text="'Новая задача'">Задача</h3>
-
+<!--отображение тела задачи-->
 <form th:action="${task.getId() != null} ? '/task/' + ${task.getId()} : '/task'" method="POST">
     <label for="title">Название задачи:</label>
     <input type="text" id="title" name="title" th:value="${task.getTitle()}" required>
@@ -31,13 +31,19 @@
     <label for="expire">Дата:</label>
     <input type="date" id="expire" name="expireDate" th:value="${task.getExpireDate().toString()}">
 
-    <!--  показать если работаем с уже существующей задачей -->
-    <div th:if="${task.getId() != null}">
-        <p th:text="${task.getStatus()}"></p>
-        <p th:if="${task.getStatus().toString() == 'SET'}"><input type="checkbox" name="status" value="1">Отметить
-            выполненым</p>
-        <p th:if="${task.getStatus().toString() == 'DONE'}"><input type="checkbox" name="status" value="0">Отметить
-            невыполненым</p>
+    <!--  показать если работаем с новой задачей -->
+    <input th:if="${task.getId() == null}" type="hidden" name="status" value="0">
+
+    <!--  показать если работаем с уже существующей непросроченной задачей -->
+    <div th:if="${task.getId() != null} and ${task.getStatus().toString() != 'EXPIRED'}">
+        <p th:if="${task.getStatus().toString() == 'SET'}">
+            <input type="checkbox" id="check_yes" name="status" value="1">
+            <label for="check_yes">Отметить выполненым</label>
+        </p>
+        <p th:if="${task.getStatus().toString() == 'DONE'}">
+            <input type="checkbox" id="check_not" name="status" value="0">
+            <label for="check_not">Отметить невыполненым</label>
+        </p>
     </div>
 
     <input type="submit" value="Сохранить">

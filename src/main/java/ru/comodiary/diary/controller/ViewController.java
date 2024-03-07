@@ -21,44 +21,45 @@ public class ViewController {
     // по умолчанию выводит представление месяц с текущей даты, если в форме была введена дата-то с указанной
     @GetMapping("/")
     public String viewMonth(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
+        model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("month", service.getAllTasksForMonth(date));
         model.addAttribute("monthName", service.getMonthName(date));
-        model.addAttribute("expired", service.getAllExpiredTasks());
         return "month";
     }
 
     @GetMapping("/3_days")
     public String viewFourDays(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
+        model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("threeDays", service.getAllTasksThreeDays(date));
-        model.addAttribute("expired", service.getAllExpiredTasks());
         return "3_days";
     }
 
     @GetMapping("/day")
     public String viewDay(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
+        model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("day", service.getAllDayTasks(date));
         model.addAttribute("dayName", service.getDayName(date));
-        model.addAttribute("expired", service.getAllExpiredTasks());
         return "day";
     }
 
     @GetMapping("/list")
     public String viewList(Model model, @RequestParam(value = "search") String search) {
+        model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("tasks", service.getAllTasksBySearch(search));
-        model.addAttribute("expired", service.getAllExpiredTasks());
+        model.addAttribute("search", search);
         return "list";
     }
 
     @GetMapping("/expired")
     public String viewListOfExpiredTasks(Model model) {
-        model.addAttribute("tasks", service.getAllExpiredTasks());
+        model.addAttribute("tasks", service.updateAndGetAllExpiredTasks());
         return "list";
     }
 
     @GetMapping("/task/{id}")
     public String viewTask(Model model, @PathVariable Long id) {
+        model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("task", service.getTaskById(id));
-        model.addAttribute("expired", service.getAllExpiredTasks());
         return "task";
     }
 
@@ -69,6 +70,7 @@ public class ViewController {
         task.setExpireDate(LocalDate.now());
         task.setStatus(TaskStatus.NOT_COMPLETED);
         model.addAttribute("task", task);
+        model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         return "task";
     }
 }

@@ -21,6 +21,7 @@
     <div class="nav-buttons">
         <a th:href="@{'/?date=' + ${month.getFirstDate().minusMonths(1).toString()}}"
            th:class="'arrow-button left'"> </a>
+        <input type="submit" value="Назад" onclick="history.back()" class="arrow-button">
         <a th:href="@{'/?date=' + ${month.getFirstDate().plusMonths(1).toString()}}"
            th:class="'arrow-button right'"> </a>
     </div>

@@ -87,7 +87,10 @@ th {
 }
 .nav-buttons {
     margin-bottom: 5px;
+    display: flex;
     text-align: center;
+    gap: 10px;
+    justify-content: center;
 }
 .arrow-button {
     display: inline-block;
@@ -98,8 +101,8 @@ th {
     text-decoration: none;
     color: #333;
     font-weight: bold;
-    margin-right: 40px;
-    margin-left: 40px;
+    /*margin-right: 40px;*/
+    /*margin-left: 40px;*/
 }
 .arrow-button.left::before {
     color: #ffffff;

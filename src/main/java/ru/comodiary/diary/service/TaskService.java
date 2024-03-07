@@ -1,7 +1,5 @@
 package ru.comodiary.diary.service;
 
-import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.comodiary.diary.model.*;
@@ -22,11 +20,12 @@ public class TaskService {
 
     private final TaskRepository repository;
 
-//        @PostConstruct
-    private void fdata(){
+    //        @PostConstruct
+    private void fdata() {
         Task four6 = new Task("ther mushrooms", "fourtest", LocalDate.of(2024, 4, 5), TaskStatus.EXPIRED);
         addOrUpdateTask(four6);
     }
+
     private void fakeData() {
         Task one = new Task("first", "ftest", LocalDate.of(2024, 3, 1), TaskStatus.NOT_COMPLETED);
         Task two = new Task("get bags", "stest", LocalDate.of(2024, 3, 2), TaskStatus.NOT_COMPLETED);
@@ -84,8 +83,8 @@ public class TaskService {
         return new Day(repository.findByExpireDate(localDate), localDate);
     }
 
-    public List<Task> getAllTasksFromDate(String date) {
-        return repository.findByExpireDateGreaterThanEqual(convertStringToLocalDate(date));
+    public Day getAllDayTasks(LocalDate date) {
+        return new Day(repository.findByExpireDate(date), date);
     }
 
     public Task getTaskById(Long id) {
@@ -135,7 +134,21 @@ public class TaskService {
         return repository.findByTitleContainingOrDescriptionContaining(search, search);
     }
 
-    public List<Task> getAllExpiredTasks() {
+    public List<Task> updateAndGetAllExpiredTasks() {
+        // найти все невып таски младше даты
+        List<Task> tasks = repository.findByExpireDateLessThanAndStatusEquals(LocalDate.now(), TaskStatus.NOT_COMPLETED);
+        // всем менять статус
+        if (!tasks.isEmpty()) {
+            for (Task task : tasks) task.setStatus(TaskStatus.EXPIRED);
+            repository.saveAll(tasks);
+        }
+        // найти среди просроченных таски старше или равные даты
+        tasks = repository.findByExpireDateGreaterThanEqualAndStatusEquals(LocalDate.now(), TaskStatus.EXPIRED);
+        // менять статусы
+        if (!tasks.isEmpty()) {
+            for (Task task : tasks) task.setStatus(TaskStatus.NOT_COMPLETED);
+            repository.saveAll(tasks);
+        }
         return repository.findByStatus(TaskStatus.EXPIRED);
     }
 

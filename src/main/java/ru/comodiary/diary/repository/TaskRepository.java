@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    List<Task> findByExpireDateGreaterThanEqual(LocalDate date);
+    List<Task> findByExpireDateLessThanAndStatusEquals(LocalDate date, TaskStatus status);
+
+    List<Task> findByExpireDateGreaterThanEqualAndStatusEquals(LocalDate date, TaskStatus status);
 
     List<Task> findByExpireDateBetween(LocalDate startDate, LocalDate lastDate);
 

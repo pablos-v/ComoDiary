@@ -15,11 +15,28 @@
     <div th:replace="menu :: menu" th:fragment="menu"></div>
 </nav>
 
-<ul>
-    <li th:each="task : ${tasks}" >
-        <p th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+
+<ol>
+    <li th:each="task : ${tasks}">
+        <!--зачеркнуть выполненные, подсветить просроченные-->
+        <div>
+            <a th:href="@{'/task/' + ${task.getId()}}">
+                <p th:if="${task.getStatus().toString() != 'EXPIRED'}"
+                   th:class="${task.getStatus().toString() == 'SET'} ? 'month-task-title' : 'month-task-title-done'"
+                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+
+                <p th:if="${task.getStatus().toString() == 'EXPIRED'}"
+                   class="month-task-title-expired"
+                   th:text="${task.getTitle() + ' : ' + task.getDescription()}"></p>
+            </a>
+            <form th:if="${task.getStatus().toString() != 'EXPIRED'}" th:action="'/change-status'" method="POST">
+                <input type="hidden" name="id" th:value="${task.getId()}">
+                <input type="hidden" name="whereTo" th:value="'/list?search=' + ${search}">
+                <input type="submit" th:value="${task.getStatus().toString() == 'SET'} ? 'Выполнено' : 'Не выполнено'">
+            </form>
+        </div>
     </li>
-</ul>
+</ol>
 
 </body>
 </html>
