@@ -1,6 +1,6 @@
 <menu>
     <form th:action="${pageToGo}" method="GET">
-        <p>Выберите дату: <input type="date" name="date">
+        <p>Дата: <input type="date" name="date">
             <input type="submit" value="Показать задачи"></p>
     </form>
 
@@ -21,7 +21,7 @@
     </div>
 
     <form action="/list" method="get">
-        <input type="text" name="search" placeholder="введите запрос">
+        <input type="text" name="search" placeholder="введите запрос" maxlength="30">
         <input type="submit" value="Поиск">
     </form>
 </menu>

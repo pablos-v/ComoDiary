@@ -24,6 +24,45 @@
            th:class="'arrow-button right'"> </a>
     </div>
 </div>
+<div>
+
+    <table th:each="day : ${threeDays.getDays()}" class="table-container">
+        <thead class="thead-bg-color-day">
+        <tr>
+            <th>
+                <span th:text="${dayName}"></span>
+                <a th:href="@{'/task?date=' + ${day.getDate()}}" th:class="'button-add'">+</a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${day.getTasks()}">
+            <td>
+                <div class="in-day-cell">
+                    <a th:href="@{'/task/' + ${task.getId()}}">
+                        <p th:if="${task.getStatus().toString() != 'EXPIRED'}"
+                           th:class="${task.getStatus().toString() == 'SET'} ? 'month-task-title day-font' : 'month-task-title-done day-font'"
+                           th:text="${task.getTitle().length() <= 50} ? ${task.getTitle()}
+                                       : ${task.getTitle().substring(0, 50)} + '...'"></p>
+
+                        <p th:if="${task.getStatus().toString() == 'EXPIRED'}"
+                           class="month-task-title-expired day-font"
+                           th:text="${task.getTitle().length() <= 50} ? ${task.getTitle()}
+                                       : ${task.getTitle().substring(0, 50)} + '...'"></p>
+                    </a>
+                    <form th:if="${task.getStatus().toString() != 'EXPIRED'}" th:action="'/change-status'" method="POST">
+                        <input type="hidden" name="id" th:value="${task.getId()}">
+                        <input type="hidden" name="whereTo" value="day">
+                        <input type="submit" th:class="${task.getStatus().toString() == 'SET'} ? 'btn-done' : 'btn-set'"
+                               th:value="${task.getStatus().toString() == 'SET'} ? 'Выполнено' : 'Не выполнено'">
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
 
 </body>
 </html>

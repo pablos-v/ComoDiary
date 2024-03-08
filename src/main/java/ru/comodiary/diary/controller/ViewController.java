@@ -65,11 +65,8 @@ public class ViewController {
 
     // for new task
     @GetMapping("/task")
-    public String viewAddTask(Model model) {
-        Task task = new Task();
-        task.setExpireDate(LocalDate.now());
-        task.setStatus(TaskStatus.NOT_COMPLETED);
-        model.addAttribute("task", task);
+    public String viewAddTask(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
+        model.addAttribute("task", service.prepareTask(date));
         model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         return "task";
     }

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -76,8 +77,12 @@ public class TaskService {
     }
 
     public ThreeDays getAllTasksThreeDays(String date) {
-        LocalDate startDate = convertStringToLocalDate(date);
-        return new ThreeDays(repository.findByExpireDateBetween(startDate, startDate.plusDays(3)), startDate);
+        LocalDate firstDate = convertStringToLocalDate(date);
+        List<Day> days = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            days.add(new Day(repository.findByExpireDate(firstDate.plusDays(i)), firstDate.plusDays(i)));
+        }
+        return new ThreeDays(days, firstDate);
     }
 
     public Day getAllDayTasks(String date) {
@@ -134,7 +139,7 @@ public class TaskService {
         Locale ru = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
         String weekDay = localDate.getDayOfWeek().getDisplayName(TextStyle.FULL, ru);
 
-        return String.format("%s,  %s", dateFormat, weekDay);
+        return String.format("%s - %s", weekDay.toUpperCase(), dateFormat);
     }
 
     public List<Task> getAllTasksBySearch(String search) {
@@ -163,6 +168,13 @@ public class TaskService {
         Task task = getTaskById(id);
         task.setStatus(task.getStatus() == TaskStatus.COMPLETED ? TaskStatus.NOT_COMPLETED : TaskStatus.COMPLETED);
         repository.save(task);
+        return task;
+    }
+
+    public Task prepareTask(String date) {
+        Task task = new Task();
+        task.setExpireDate(convertStringToLocalDate(date));
+        task.setStatus(TaskStatus.NOT_COMPLETED);
         return task;
     }
 }

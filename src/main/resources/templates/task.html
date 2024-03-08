@@ -24,9 +24,9 @@
 <!--отображение тела задачи-->
 <form th:action="${task.getId() != null} ? '/task/' + ${task.getId()} : '/task'" method="POST">
     <label for="title">Название задачи:</label>
-    <input type="text" id="title" name="title" th:value="${task.getTitle()}" required>
+    <input type="text" id="title" name="title" th:value="${task.getTitle()}" required maxlength="150">
     <label for="description">Описание задачи:</label>
-    <textarea id="description" name="description" th:text="${task.getDescription()}"></textarea>
+    <textarea id="description" name="description" maxlength="500" th:text="${task.getDescription()}"></textarea>
 
     <label for="expire">Дата:</label>
     <input type="date" id="expire" name="expireDate" th:value="${task.getExpireDate().toString()}">
