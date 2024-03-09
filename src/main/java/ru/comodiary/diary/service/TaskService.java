@@ -12,10 +12,7 @@ import java.time.LocalDate;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -133,17 +130,10 @@ public class TaskService {
         };
     }
 
-    public String getDayName(String date) {
-        LocalDate localDate = convertStringToLocalDate(date);
-        String dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(localDate);
-        Locale ru = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
-        String weekDay = localDate.getDayOfWeek().getDisplayName(TextStyle.FULL, ru);
-
-        return String.format("%s - %s", weekDay.toUpperCase(), dateFormat);
-    }
-
     public List<Task> getAllTasksBySearch(String search) {
-        return repository.findByTitleContainingOrDescriptionContaining(search, search);
+        List<Task> taskList = repository.findByTitleContainingOrDescriptionContaining(search, search);
+        taskList.sort(Comparator.comparing(Task::getExpireDate));
+        return taskList;
     }
 
     public List<Task> updateAndGetAllExpiredTasks() {

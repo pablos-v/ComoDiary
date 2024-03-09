@@ -38,7 +38,6 @@ public class ViewController {
     public String viewDay(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("day", service.getAllDayTasks(date));
-        model.addAttribute("dayName", service.getDayName(date));
         return "day";
     }
 

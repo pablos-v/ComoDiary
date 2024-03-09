@@ -7,6 +7,9 @@ import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 @Entity
 @Data
@@ -56,5 +59,13 @@ public class Task {
             case "-1" -> TaskStatus.EXPIRED;
             default -> TaskStatus.NOT_COMPLETED;
         };
+    }
+    public String getReadableExpireDate() {
+        return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(this.expireDate);
+    }
+
+    public String getWeekDay(){
+        Locale ru = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
+        return this.expireDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, ru).toUpperCase();
     }
 }

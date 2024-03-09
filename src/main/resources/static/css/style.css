@@ -4,6 +4,7 @@
     margin-top: 3px;
     margin-bottom: 3px;
 }
+
 .thead-bg-color-day {
     border: 2px solid #0447b8;
     background-color: #0447b8;
@@ -11,12 +12,14 @@
     margin-top: 3px;
     margin-bottom: 3px;
 }
-.thead-bg-color-day th{
+
+.thead-bg-color-day th {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
-.thead-bg-color-day a{
+
+.thead-bg-color-day a {
     font-size: xx-large;
     padding: 0;
 }
@@ -38,6 +41,11 @@
 
 .month-task-title {
     /*text-decoration: none;*/
+}
+
+.three-days {
+    display: flex;
+    gap: 2px;
 }
 
 .month-task-title-done {
@@ -70,9 +78,24 @@
     color: white;
 }
 
+.now {
+    background-color: #146c43;
+}
+
 a {
     color: #146c43;
     text-decoration: none;
+}
+
+ol {
+    font-size: large;
+}
+
+li div {
+    display: flex;
+    gap: 10px;
+    font-size: large;
+    align-items: center;
 }
 
 h2 {
@@ -88,10 +111,12 @@ table {
     table-layout: fixed; /* Фиксированный размер столбцов */
     border-collapse: collapse;
 }
-td{
+
+td {
     border: 2px solid black;
 
 }
+
 .table-month td {
     width: calc(100% / 7); /* 100% / 7 (число столбцов) = 20% */
     border: 1px solid black;
@@ -157,10 +182,6 @@ th {
     margin-left: 5px;
 }
 
-
-/*----------------*/
-
-
 menu {
     display: flex;
     justify-content: space-between;
@@ -174,11 +195,16 @@ menu form,
 menu p {
     margin: 0;
 }
-label{
+
+label {
     font-size: large;
 }
-textarea{
+
+textarea {
     font-size: large;
+    min-height: 80px; /* Минимальная высота */
+    height: auto; /* Автоматическое изменение высоты */
+    resize: none; /* Запрет на изменение размера */
 }
 
 input[type="date"],
@@ -198,13 +224,16 @@ input[type="submit"] {
     cursor: pointer;
     font-size: large;
 }
-.btn-set{
+
+.btn-set {
     background-color: #78aafd !important;
 }
-.day-font{
+
+.day-font {
     font-size: large;
 }
-.btn-done{
+
+.btn-done {
     background-color: #3093fc;
 }
 
@@ -214,7 +243,7 @@ select {
     border-radius: 5px;
 }
 
-option{
+option {
     font-size: large;
 }
 
@@ -237,4 +266,46 @@ option{
 .table-container {
     width: 50%;
     margin: 0 auto;
+}
+
+.btn-del {
+    background-color: #cf0c0f !important;
+}
+
+.task-view {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 auto;
+}
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-view-btns {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.task-form-inside {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+input[type="checkbox"] {
+    zoom: 2; /* Увеличение размера в 2 раза */
+}
+
+.task-status-done {
+    color: #146c43;
+}
+
+.task-status-expired {
+    color: darkred;
 }

@@ -11,10 +11,12 @@ public class Month {
     private String name;
     private final List<Week> weeks;
     private LocalDate firstDate;
+    private LocalDate nowDate;
 
     public Month(List<Task> allTasksOfMonth, int diffToMonday, LocalDate lastDate) {
         this.weeks = new ArrayList<>();
         this.firstDate = lastDate.withDayOfMonth(1);
+        this.nowDate = LocalDate.now();
         byte counter = 1;
         byte last = (byte) lastDate.getDayOfMonth();
 
@@ -39,8 +41,6 @@ public class Month {
                             }
                         }
                     }
-
-
                 } else day = new Day();
 
                 week.getDays().add(day);

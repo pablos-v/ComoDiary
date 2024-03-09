@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
     <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
@@ -30,7 +31,7 @@
     <thead class="thead-bg-color-day">
     <tr>
         <th>
-            <span th:text="${dayName}"></span>
+            <span th:text="${day.getDayName()}"></span>
             <a th:href="@{'/task?date=' + ${day.getDate()}}" th:class="'button-add'">+</a>
         </th>
     </tr>
