@@ -6,11 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.comodiary.diary.model.Task;
-import ru.comodiary.diary.model.TaskStatus;
+import ru.comodiary.diary.model.Util;
 import ru.comodiary.diary.service.TaskService;
-
-import java.time.LocalDate;
 
 @Controller
 @AllArgsConstructor
@@ -23,7 +20,7 @@ public class ViewController {
     public String viewMonth(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("month", service.getAllTasksForMonth(date));
-        model.addAttribute("monthName", service.getMonthName(date));
+        model.addAttribute("monthName", Util.getMonthName(date));
         return "month";
     }
 
@@ -65,7 +62,7 @@ public class ViewController {
     // for new task
     @GetMapping("/task")
     public String viewAddTask(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
-        model.addAttribute("task", service.prepareTask(date));
+        model.addAttribute("task", Util.prepareTask(date));
         model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         return "task";
     }

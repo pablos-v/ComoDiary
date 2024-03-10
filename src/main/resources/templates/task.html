@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
-    <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
-    <script src="/js/script.js"></script>
-    <title>Карточка задачи</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div id="head" th:with="pageTitle='Карточка задачи'">
+    <!-- Включение head -->
+    <div th:replace="head :: head" th:fragment="head"></div>
+</div>
 <body>
 <nav th:with="pageToGo='/day'">
     <!-- Включение меню -->
@@ -36,10 +30,10 @@
                     <input type="date" id="expire" name="expireDate" th:value="${task.getExpireDate().toString()}">
                 </div>
 
-                <!--  если работаем с новой задачей -->
+                <!-- статус по умолчанию, если работаем с новой задачей -->
                 <input th:if="${task.getId() == null}" type="hidden" name="status" value="0">
 
-                <!--  если работаем с уже существующей непросроченной задачей -->
+                <!-- статус, если работаем с уже существующей непросроченной задачей -->
                 <div th:if="${task.getId() != null} and ${task.getStatus().toString() != 'EXPIRED'}">
                     <p th:if="${task.getStatus().toString() == 'SET'}">
                         <label for="check_yes">Выполнено</label>

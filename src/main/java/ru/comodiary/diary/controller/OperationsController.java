@@ -2,15 +2,15 @@ package ru.comodiary.diary.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.comodiary.diary.model.Task;
+import ru.comodiary.diary.model.Util;
 import ru.comodiary.diary.service.TaskService;
 
 @Controller
 @AllArgsConstructor
-public class PostPutDeleteController {
+public class OperationsController {
 
     private final TaskService service;
 
@@ -23,7 +23,7 @@ public class PostPutDeleteController {
         Task task = new Task(title, description, expireDate, status);
         service.addOrUpdateTask(task);
 
-        return new ModelAndView("redirect:" + "/day?date=" + task.getExpireDate());
+        return new ModelAndView("redirect:" + "/day?date=" + expireDate);
     }
 
     // фактически это PUT, но HTML формы поддерживают только 2 метода GET и POST... ссыль в литературе есть
@@ -35,12 +35,11 @@ public class PostPutDeleteController {
         Task task = service.getTaskById(id);
         task.setTitle(title);
         task.setDescription(description);
-        task.setExpireDate(service.convertStringToLocalDate(expireDate));
+        task.setExpireDate(Util.convertStringToLocalDate(expireDate));
         if (!status.equals("no")) task.setStringStatus(status);
-
         service.addOrUpdateTask(task);
 
-        return new ModelAndView("redirect:" + "/day?date=" + task.getExpireDate());
+        return new ModelAndView("redirect:" + "/day?date=" + expireDate);
     }
 
     // удаляет задачу и редиректит обратно в день

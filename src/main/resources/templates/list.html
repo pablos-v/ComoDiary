@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
-    <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
-    <script src="/js/script.js"></script>
-    <title>Задачи на 4 дня</title>
-</head>
+<div id="head" th:with="pageTitle='Список задач'">
+    <!-- Включение head -->
+    <div th:replace="head :: head" th:fragment="head"></div>
+</div>
 <body>
 <nav th:with="pageToGo='/list'">
     <!-- Включение меню -->

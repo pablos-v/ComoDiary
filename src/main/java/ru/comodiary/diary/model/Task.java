@@ -63,7 +63,6 @@ public class Task {
     public String getReadableExpireDate() {
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(this.expireDate);
     }
-
     public String getWeekDay(){
         Locale ru = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
         return this.expireDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, ru).toUpperCase();

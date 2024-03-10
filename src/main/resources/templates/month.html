@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/fonts/Roboto-Regular.ttf">
-    <link rel="stylesheet" href="/fonts/Roboto-Bold.ttf">
-    <script src="/js/script.js"></script>
-    <title>Календарь задач на месяц</title>
-</head>
+<div id="head" th:with="pageTitle='Календарь задач на месяц'">
+    <!-- Включение head -->
+    <div th:replace="head :: head" th:fragment="head"></div>
+</div>
 <body>
 <nav th:with="pageToGo='/'">
     <!-- Включение меню -->
@@ -31,13 +25,13 @@
             <table class="table-month">
                 <thead class="thead-bg-color">
                 <tr>
-                    <th>Пн</th>
-                    <th>Вт</th>
-                    <th>Ср</th>
-                    <th>Чт</th>
-                    <th>Пт</th>
-                    <th>Сб</th>
-                    <th>Вс</th>
+                    <th>ПН</th>
+                    <th>ВТ</th>
+                    <th>СР</th>
+                    <th>ЧТ</th>
+                    <th>ПТ</th>
+                    <th>СБ</th>
+                    <th>ВС</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,34 +39,28 @@
                     <td th:each="day : ${week.getDays()}" th:class="'day-cell'">
                         <!--если номер есть - отобразить и сделать кликабельным-->
                         <a th:if="${day.getNumber() != null}" th:text="${day.getNumber()}"
-                           th:class="${day.getDate()==month.getNowDate()} ? 'day-num now' : 'day-num'"
+                           th:class="${day.getDate() == month.getNowDate()} ? 'day-num now' : 'day-num'"
                            th:href="@{'/day?date=' + ${day.getDate().toString()}}">
                         </a>
                         <!--отобразить все задачи на день-->
                         <div th:if="${day.getTasks() != null} and ${day.getTasks().size() <= 4}"
                              th:each="task : ${day.getTasks()}">
                             <!--зачеркнуть выполненные, подсветить просроченные-->
-                            <div th:switch="${task.getStatus().toString()}">
-
-                                <a th:href="@{'/task/' + ${task.getId()}}">
-                                    <p th:case="${'SET'}" th:class="'month-task-title'"
-                                       th:text="${task.getTitle().length() <= 20} ? ${task.getTitle()}
-                                       : ${task.getTitle().substring(0, 20)} + '...'"></p>
-                                    <p th:case="${'DONE'}" th:class="'month-task-title-done'"
-                                       th:text="${task.getTitle().length() <= 20} ? ${task.getTitle()}
-                                       : ${task.getTitle().substring(0, 20)} + '...'"></p>
-                                    <p th:case="${'EXPIRED'}" th:class="'month-task-title-expired'"
-                                       th:text="${task.getTitle().length() <= 20} ? ${task.getTitle()}
-                                       : ${task.getTitle().substring(0, 20)} + '...'"></p>
-                                </a>
-                            </div>
+                            <a th:href="@{'/task/' + ${task.getId()}}">
+                                <p th:text="${task.getTitle().length() <= 20} ? ${task.getTitle()}
+                                       : ${task.getTitle().substring(0, 20)} + '...'"
+                                   th:class="${task.getStatus().toString() == 'SET'} ? 'month-task-title'
+                                       : (${task.getStatus().toString() == 'DONE'} ? 'month-task-title-done'
+                                           : 'month-task-title-expired')"></p>
+                            </a>
                         </div>
                         <!-- или кол-во задач если их > 4-->
                         <div th:if="${day.getTasks() != null} and ${day.getTasks().size() > 4}">
                             <a th:text="${day.getTasks().size() + ' задач'}"
-                               th:class="${day.hasExpired()} ? 'month-task-title-expired' :
-                               (${day.getDate() < month.getNowDate()} ? 'month-task-title-done': 'month-many-tasks')"
-                               th:href="@{'/day?date=' + ${day.getDate().toString()}}">
+                               th:class="${day.hasExpired()} ? 'month-task-title-expired'
+                                   : (${day.getDate() < month.getNowDate()} ? 'month-task-title-done'
+                                      : 'month-many-tasks')"
+                               th:href="@{'/day?date=' + ${day.getDate()}}">
                             </a>
                         </div>
                     </td>

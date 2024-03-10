@@ -20,6 +20,11 @@
 }
 
 .thead-bg-color-day a {
+    color: white;
+    padding: 0;
+}
+
+.in-day-cell a {
     font-size: xx-large;
     padding: 0;
 }
@@ -266,6 +271,7 @@ option {
 .table-container {
     width: 50%;
     margin: 0 auto;
+    height: fit-content;
 }
 
 .btn-del {
