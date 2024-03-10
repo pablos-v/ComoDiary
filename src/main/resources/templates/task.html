@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div id="head" th:with="pageTitle='Карточка задачи'">
     <!-- Включение head -->
-    <div th:replace="head :: head" th:fragment="head"></div>
+    <div th:replace="~{head :: head}" th:fragment="head"></div>
 </div>
 <body>
 <nav th:with="pageToGo='/day'">
     <!-- Включение меню -->
-    <div th:replace="menu :: menu" th:fragment="menu"></div>
+    <div th:replace="~{menu :: menu}" th:fragment="menu"></div>
 </nav>
 <!--отображение статуса-->
 <div class="task-view">

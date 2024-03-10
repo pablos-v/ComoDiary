@@ -33,7 +33,6 @@ public class Task {
     @Column(name = "status")
     private TaskStatus status;
 
-    // for dev
     public Task(String title, String description, LocalDate expireDate) {
         this.title = title;
         this.description = description;
@@ -41,7 +40,6 @@ public class Task {
         this.status = TaskStatus.NOT_COMPLETED;
     }
 
-    // for prod
     public Task(String title, String description, String expireDate, String status) {
         this.title = title;
         this.description = description;

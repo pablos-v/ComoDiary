@@ -18,7 +18,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    //@PostConstruct
+//    @PostConstruct
+//    public void createUser() {
+//        if (userRepository.findAll().isEmpty()) {
+//            String encodedPassword = new BCryptPasswordEncoder().encode("user");
+//            userRepository.save(new User("user", encodedPassword, "user"));
+//        }
+//    }
+
     public void createUser(String user, String rawPassword) {
         if (userRepository.findAll().isEmpty()) {
             String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);

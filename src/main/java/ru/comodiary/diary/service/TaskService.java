@@ -20,7 +20,7 @@ public class TaskService {
     @PostConstruct
     private void createDemoTask(){
         if (repository.findAll().isEmpty()){
-            Task task = new Task("DEMO Title", "DEMO Description", LocalDate.now());
+            Task task = new Task("DEMO Task Title", "DEMO Task Description", LocalDate.now());
             repository.save(task);
         }
     }
