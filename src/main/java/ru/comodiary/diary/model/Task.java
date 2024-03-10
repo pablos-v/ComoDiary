@@ -34,11 +34,11 @@ public class Task {
     private TaskStatus status;
 
     // for dev
-    public Task(String title, String description, LocalDate expireDate, TaskStatus status) {
+    public Task(String title, String description, LocalDate expireDate) {
         this.title = title;
         this.description = description;
         this.expireDate = expireDate;
-        this.status = status;
+        this.status = TaskStatus.NOT_COMPLETED;
     }
 
     // for prod

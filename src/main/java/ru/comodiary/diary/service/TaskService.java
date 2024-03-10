@@ -1,5 +1,6 @@
 package ru.comodiary.diary.service;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.comodiary.diary.model.*;
@@ -16,6 +17,13 @@ import java.util.*;
 public class TaskService {
 
     private final TaskRepository repository;
+    @PostConstruct
+    private void createDemoTask(){
+        if (repository.findAll().isEmpty()){
+            Task task = new Task("DEMO Title", "DEMO Description", LocalDate.now());
+            repository.save(task);
+        }
+    }
 
     public Month getAllTasksForMonth(String date) {
         // берём первый день
