@@ -22,7 +22,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByStatus(TaskStatus taskStatus);
 
     // поиск
-    List<Task> findByTitleContainingOrDescriptionContaining(String search, String search1);
+    List<Task> findByTitleContainingOrDescriptionContainingAndExpireDateGreaterThan(String queryForTitle, String queryForDescription, LocalDate date);
 
 
 }

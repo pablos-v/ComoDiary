@@ -1,4 +1,4 @@
-package ru.comodiary.diary.security;
+package ru.comodiary.diary.model;
 
 
 import jakarta.persistence.*;

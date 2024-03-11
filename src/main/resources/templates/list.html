@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div id="head" th:with="pageTitle='Список задач'">
+<th:block th:with="pageTitle='Список задач'">
     <!-- Включение head -->
     <div th:replace="~{head :: head}" th:fragment="head"></div>
-</div>
+</th:block>
 <body>
 <nav th:with="pageToGo='/list'">
     <!-- Включение меню -->
@@ -22,11 +22,11 @@
                 (${task.getTitle().length() <= 100} ? ${task.getTitle()}
                 : ${task.getTitle().substring(0, 100)} + '...')"></p>
             </a>
-            <form th:if="${task.getStatus().toString() != 'EXPIRED'}" th:action="'/change-status'" method="POST">
+            <form th:action="'/change-status'" method="POST">
                 <input type="hidden" name="id" th:value="${task.getId()}">
-                <input type="hidden" name="whereTo" th:value="'/list?search=' + ${search}">
-                <input type="submit" th:class="${task.getStatus().toString() == 'SET'} ? 'btn-done' : 'btn-set'"
-                       th:value="${task.getStatus().toString() == 'SET'} ? 'Выполнено' : 'Не выполнено'">
+                <input type="hidden" name="whereTo" th:value="${urlAddress}">
+                <input type="submit" th:class="${task.getStatus().toString() == 'DONE'} ? 'btn-set' : 'btn-done'"
+                       th:value="${task.getStatus().toString() == 'DONE'} ? 'Не выполнено' : 'Выполнено'">
             </form>
         </div>
     </li>

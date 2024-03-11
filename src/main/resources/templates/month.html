@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div id="head" th:with="pageTitle='Календарь задач на месяц'">
+<th:block th:with="pageTitle='Календарь задач на месяц'">
     <!-- Включение head -->
     <div th:replace="~{head :: head}" th:fragment="head"></div>
-</div>
+</th:block>
 <body>
 <nav th:with="pageToGo='/'">
     <!-- Включение меню -->

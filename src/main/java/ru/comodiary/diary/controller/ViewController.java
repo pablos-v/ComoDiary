@@ -39,16 +39,19 @@ public class ViewController {
     }
 
     @GetMapping("/list")
-    public String viewList(Model model, @RequestParam(value = "search") String search) {
+    public String viewList(Model model, @RequestParam(value = "search", defaultValue = "") String search,
+                           @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
-        model.addAttribute("tasks", service.getAllTasksBySearch(search));
-        model.addAttribute("search", search);
+        model.addAttribute("tasks", service.getAllTasksBySearchAndDate(search, date));
+        model.addAttribute("urlAddress", "/list?search=" + search);
         return "list";
     }
 
     @GetMapping("/expired")
     public String viewListOfExpiredTasks(Model model) {
+        model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("tasks", service.updateAndGetAllExpiredTasks());
+        model.addAttribute("urlAddress", "/expired");
         return "list";
     }
 

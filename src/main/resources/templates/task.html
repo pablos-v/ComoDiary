@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div id="head" th:with="pageTitle='Карточка задачи'">
+<th:block th:with="pageTitle='Карточка задачи'">
     <!-- Включение head -->
     <div th:replace="~{head :: head}" th:fragment="head"></div>
-</div>
+</th:block>
 <body>
 <nav th:with="pageToGo='/day'">
     <!-- Включение меню -->
@@ -33,9 +33,9 @@
                 <!-- статус по умолчанию, если работаем с новой задачей -->
                 <input th:if="${task.getId() == null}" type="hidden" name="status" value="0">
 
-                <!-- статус, если работаем с уже существующей непросроченной задачей -->
-                <div th:if="${task.getId() != null} and ${task.getStatus().toString() != 'EXPIRED'}">
-                    <p th:if="${task.getStatus().toString() == 'SET'}">
+                <!-- статус, если работаем с уже существующей задачей -->
+                <div th:if="${task.getId() != null}">
+                    <p th:if="${task.getStatus().toString() == 'SET'} or ${task.getStatus().toString() == 'EXPIRED'}">
                         <label for="check_yes">Выполнено</label>
                         <input type="checkbox" id="check_yes" name="status" value="1">
                     </p>

@@ -1,5 +1,6 @@
 package ru.comodiary.diary.service;
 
+import com.zaxxer.hikari.util.FastList;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,10 @@ import java.util.*;
 public class TaskService {
 
     private final TaskRepository repository;
+
     @PostConstruct
-    private void createDemoTask(){
-        if (repository.findAll().isEmpty()){
+    private void createDemoTask() {
+        if (repository.findAll().isEmpty()) {
             Task task = new Task("DEMO Task Title", "DEMO Task Description", LocalDate.now());
             repository.save(task);
         }
@@ -69,8 +71,10 @@ public class TaskService {
         return result;
     }
 
-    public List<Task> getAllTasksBySearch(String search) {
-        List<Task> taskList = repository.findByTitleContainingOrDescriptionContaining(search, search);
+    public List<Task> getAllTasksBySearchAndDate(String query, String date) {
+        LocalDate localDate = Util.convertStringToLocalDate(date);
+        List<Task> taskList = repository.
+                findByTitleContainingOrDescriptionContainingAndExpireDateGreaterThan(query,query,localDate);
         taskList.sort(Comparator.comparing(Task::getExpireDate));
         return taskList;
     }
@@ -90,7 +94,9 @@ public class TaskService {
             for (Task task : tasks) task.setStatus(TaskStatus.NOT_COMPLETED);
             repository.saveAll(tasks);
         }
-        return repository.findByStatus(TaskStatus.EXPIRED);
+        List<Task> taskList = repository.findByStatus(TaskStatus.EXPIRED);
+        taskList.sort(Comparator.comparing(Task::getExpireDate));
+        return taskList;
     }
 
     public Task changeStatus(Long id) {

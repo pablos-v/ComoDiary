@@ -18,7 +18,6 @@ public class Day {
     private List<Task> tasks;
     private LocalDate date;
     private String dayName;
-    private Boolean hasExpired;
 
     public Day(int number) {
         this.number = number;
