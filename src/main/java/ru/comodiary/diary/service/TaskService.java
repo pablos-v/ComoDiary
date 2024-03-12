@@ -33,8 +33,7 @@ public class TaskService {
         // берём последний день
         LocalDate lastDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
         // нужно для вывода номеров дат с корректного дня недели
-        DayOfWeek startDayOfWeek = startDate.getDayOfWeek();
-        int diffToMonday = startDayOfWeek.compareTo(DayOfWeek.MONDAY);
+        int diffToMonday = startDate.getDayOfWeek().compareTo(DayOfWeek.MONDAY);
 
         List<Task> allTasksOfMonth = repository.findByExpireDateBetween(startDate, lastDate);
 
@@ -106,4 +105,12 @@ public class TaskService {
         return task;
     }
 
+    public void updateTask(Long id, String title, String description, String expireDate, String status) {
+        Task task = getTaskById(id);
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setExpireDate(Util.convertStringToLocalDate(expireDate));
+        if (!status.equals("no")) task.setStatus(Util.stringToStatus(status));
+        repository.save(task);
+    }
 }

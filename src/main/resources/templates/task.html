@@ -31,17 +31,17 @@
                 </div>
 
                 <!-- статус по умолчанию, если работаем с новой задачей -->
-                <input th:if="${task.getId() == null}" type="hidden" name="status" value="0">
+                <input th:if="${task.getId() == null}" type="hidden" name="status" value="SET">
 
                 <!-- статус, если работаем с уже существующей задачей -->
                 <div th:if="${task.getId() != null}">
                     <p th:if="${task.getStatus().toString() == 'SET'} or ${task.getStatus().toString() == 'EXPIRED'}">
                         <label for="check_yes">Выполнено</label>
-                        <input type="checkbox" id="check_yes" name="status" value="1">
+                        <input type="checkbox" id="check_yes" name="status" value="DONE">
                     </p>
                     <p th:if="${task.getStatus().toString() == 'DONE'}">
                         <label for="check_not">Не выполнено</label>
-                        <input type="checkbox" id="check_not" name="status" value="0">
+                        <input type="checkbox" id="check_not" name="status" value="SET">
                     </p>
                 </div>
             </div>

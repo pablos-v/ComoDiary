@@ -32,12 +32,8 @@ public class OperationsController {
                                    @RequestParam("description") String description,
                                    @RequestParam("expireDate") String expireDate,
                                    @RequestParam(name = "status", defaultValue = "no") String status) {
-        Task task = service.getTaskById(id);
-        task.setTitle(title);
-        task.setDescription(description);
-        task.setExpireDate(Util.convertStringToLocalDate(expireDate));
-        if (!status.equals("no")) task.setStringStatus(status);
-        service.addOrUpdateTask(task);
+
+        service.updateTask(id, title, description, expireDate, status);
 
         return new ModelAndView("redirect:" + "/day?date=" + expireDate);
     }

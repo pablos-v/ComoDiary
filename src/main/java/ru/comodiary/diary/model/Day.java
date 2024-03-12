@@ -32,10 +32,9 @@ public class Day {
 
     private String dayName(){
         String dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(this.date);
-        Locale ru = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
-        String weekDay = date.getDayOfWeek().getDisplayName(TextStyle.FULL, ru);
+        String weekDay = Util.getDayOfWeek(TextStyle.FULL, this.date);
 
-        return String.format("%s - %s", weekDay.toUpperCase(), dateFormat);
+        return String.format("%s - %s", weekDay, dateFormat);
     }
 
     public Boolean hasExpired(){

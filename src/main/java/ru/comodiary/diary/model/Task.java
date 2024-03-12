@@ -44,25 +44,13 @@ public class Task {
         this.title = title;
         this.description = description;
         this.expireDate = LocalDate.parse(expireDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        this.status = stringToStatus(status);
+        this.status = Util.stringToStatus(status);
     }
 
-    public void setStringStatus(String status){
-        this.status = stringToStatus(status);
-    }
-
-    private TaskStatus stringToStatus(String s) {
-        return switch (s) {
-            case "1" -> TaskStatus.COMPLETED;
-            case "-1" -> TaskStatus.EXPIRED;
-            default -> TaskStatus.NOT_COMPLETED;
-        };
-    }
     public String getReadableExpireDate() {
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(this.expireDate);
     }
     public String getWeekDay(){
-        Locale ru = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
-        return this.expireDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, ru).toUpperCase();
+        return Util.getDayOfWeek(TextStyle.SHORT, this.expireDate);
     }
 }
