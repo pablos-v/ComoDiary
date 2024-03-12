@@ -62,7 +62,7 @@ public class ViewController {
         return "task";
     }
 
-    // for new task
+
     @GetMapping("/task")
     public String viewAddTask(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("task", Util.prepareTask(date));

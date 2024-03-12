@@ -1,9 +1,9 @@
 package ru.comodiary.diary.service;
 
-import com.zaxxer.hikari.util.FastList;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 import ru.comodiary.diary.model.*;
 import ru.comodiary.diary.repository.TaskRepository;
 
@@ -19,6 +19,7 @@ public class TaskService {
 
     private final TaskRepository repository;
 
+    // Создание демо-задачи при первом запуске
     @PostConstruct
     private void createDemoTask() {
         if (repository.findAll().isEmpty()) {
@@ -59,21 +60,23 @@ public class TaskService {
                 -> new RuntimeException(String.format("Task with id = %d is not found", id)));
     }
 
-    public void addOrUpdateTask(Task task) {
-        repository.save(task);
+    public ModelAndView addTaskAndRedirect(String title, String description, String expireDate, String status) {
+        repository.save(new Task(title, description, expireDate, status));
+        return new ModelAndView("redirect:" + "/day?date=" + expireDate);
     }
 
-    public Task deleteTaskById(Long id) {
+    public ModelAndView deleteTaskById(Long id) {
         // не нужно проверять на экзист, это сделает getTaskById(id)
-        Task result = getTaskById(id);
+        String date = getTaskById(id).getExpireDate().toString();
         repository.deleteById(id);
-        return result;
+
+        return new ModelAndView("redirect:" + "/day?date=" + date);
     }
 
     public List<Task> getAllTasksBySearchAndDate(String query, String date) {
         LocalDate localDate = Util.convertStringToLocalDate(date);
         List<Task> taskList = repository.
-                findByTitleContainingOrDescriptionContainingAndExpireDateGreaterThan(query,query,localDate);
+                findByTitleContainingOrDescriptionContainingAndExpireDateGreaterThan(query, query, localDate);
         taskList.sort(Comparator.comparing(Task::getExpireDate));
         return taskList;
     }
@@ -98,19 +101,22 @@ public class TaskService {
         return taskList;
     }
 
-    public Task changeStatus(Long id) {
-        Task task = getTaskById(id);
+    public ModelAndView changeStatusAndRedirect(String id, String whereTo) {
+        Task task = getTaskById(Long.valueOf(id));
         task.setStatus(task.getStatus() == TaskStatus.COMPLETED ? TaskStatus.NOT_COMPLETED : TaskStatus.COMPLETED);
         repository.save(task);
-        return task;
+
+        if (whereTo.equals("day")) return new ModelAndView("redirect:" + "/day?date=" + task.getExpireDate());
+        else return new ModelAndView("redirect:" + whereTo);
     }
 
-    public void updateTask(Long id, String title, String description, String expireDate, String status) {
+    public ModelAndView updateTaskAndRedirect(Long id, String title, String description, String expireDate, String status) {
         Task task = getTaskById(id);
         task.setTitle(title);
         task.setDescription(description);
         task.setExpireDate(Util.convertStringToLocalDate(expireDate));
         if (!status.equals("no")) task.setStatus(Util.stringToStatus(status));
         repository.save(task);
+        return new ModelAndView("redirect:" + "/day?date=" + expireDate);
     }
 }
