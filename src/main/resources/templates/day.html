@@ -43,7 +43,7 @@
                 </a>
                 <form th:action="'/change-status'" method="POST">
                     <input type="hidden" name="id" th:value="${task.getId()}">
-                    <input type="hidden" name="whereTo" value="day">
+                    <input type="hidden" name="whereTo" th:value="'/day?date=' + ${day.getDate()}">
                     <input type="submit" th:class="${task.getStatus().toString() == 'DONE'} ? 'btn-set' : 'btn-done'"
                            th:value="${task.getStatus().toString() == 'DONE'} ? 'Не выполнено' : 'Выполнено'">
                 </form>

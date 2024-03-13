@@ -3,7 +3,6 @@ package ru.comodiary.diary.service;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 import ru.comodiary.diary.model.*;
 import ru.comodiary.diary.repository.TaskRepository;
 
@@ -60,17 +59,17 @@ public class TaskService {
                 -> new RuntimeException(String.format("Task with id = %d is not found", id)));
     }
 
-    public ModelAndView addTaskAndRedirect(String title, String description, String expireDate, String status) {
+    public String addTaskAndRedirect(String title, String description, String expireDate, String status) {
         repository.save(new Task(title, description, expireDate, status));
-        return new ModelAndView("redirect:" + "/day?date=" + expireDate);
+        return "redirect:/day?date=" + expireDate;
     }
 
-    public ModelAndView deleteTaskById(Long id) {
+    public String deleteTaskById(Long id) {
         // не нужно проверять на экзист, это сделает getTaskById(id)
         String date = getTaskById(id).getExpireDate().toString();
         repository.deleteById(id);
 
-        return new ModelAndView("redirect:" + "/day?date=" + date);
+        return "redirect:/day?date=" + date;
     }
 
     public List<Task> getAllTasksBySearchAndDate(String query, String date) {
@@ -87,36 +86,35 @@ public class TaskService {
         // всем менять статус
         if (!tasks.isEmpty()) {
             for (Task task : tasks) task.setStatus(TaskStatus.EXPIRED);
-            repository.saveAll(tasks);
         }
+            repository.saveAll(tasks);
         // найти среди просроченных таски старше или равные даты
         tasks = repository.findByExpireDateGreaterThanEqualAndStatusEquals(LocalDate.now(), TaskStatus.EXPIRED);
         // менять статусы
         if (!tasks.isEmpty()) {
             for (Task task : tasks) task.setStatus(TaskStatus.NOT_COMPLETED);
-            repository.saveAll(tasks);
         }
+            repository.saveAll(tasks);
         List<Task> taskList = repository.findByStatus(TaskStatus.EXPIRED);
         taskList.sort(Comparator.comparing(Task::getExpireDate));
         return taskList;
     }
 
-    public ModelAndView changeStatusAndRedirect(String id, String whereTo) {
+    public String changeStatusAndRedirect(String id, String whereTo) {
         Task task = getTaskById(Long.valueOf(id));
         task.setStatus(task.getStatus() == TaskStatus.COMPLETED ? TaskStatus.NOT_COMPLETED : TaskStatus.COMPLETED);
         repository.save(task);
 
-        if (whereTo.equals("day")) return new ModelAndView("redirect:" + "/day?date=" + task.getExpireDate());
-        else return new ModelAndView("redirect:" + whereTo);
+        return "redirect:" + whereTo;
     }
 
-    public ModelAndView updateTaskAndRedirect(Long id, String title, String description, String expireDate, String status) {
+    public String updateTaskAndRedirect(Long id, String title, String description, String expireDate, String status) {
         Task task = getTaskById(id);
         task.setTitle(title);
         task.setDescription(description);
         task.setExpireDate(Util.convertStringToLocalDate(expireDate));
         if (!status.equals("no")) task.setStatus(Util.stringToStatus(status));
         repository.save(task);
-        return new ModelAndView("redirect:" + "/day?date=" + expireDate);
+        return "redirect:/day?date=" + expireDate;
     }
 }
