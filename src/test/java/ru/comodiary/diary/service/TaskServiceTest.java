@@ -6,15 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.comodiary.diary.model.Day;
-import ru.comodiary.diary.model.Month;
-import ru.comodiary.diary.model.Task;
-import ru.comodiary.diary.model.ThreeDays;
+import ru.comodiary.diary.model.*;
 import ru.comodiary.diary.repository.TaskRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -74,6 +72,7 @@ class TaskServiceTest {
 
         assertEquals(expected, response);
     }
+
     @Test
     void getTaskById() {
         Exception exception = assertThrows(RuntimeException.class, () -> taskService.getTaskById(1L));
@@ -85,29 +84,72 @@ class TaskServiceTest {
         when(repository.save(task)).thenReturn(task);
 
         String expected = "redirect:/day?date=2024-05-22";
-        String response = taskService.addTaskAndRedirect(task.getTitle(),task.getDescription(),"2024-05-22", task.getStatus().toString());
+        String response = taskService.addTaskAndRedirect(task.getTitle()
+                , task.getDescription(), "2024-05-22", task.getStatus().toString());
 
+        verify(repository).save(task);
         assertEquals(expected, response);
     }
 
 
     @Test
     void deleteTaskById() {
+        Long id = 1L;
+        when(repository.findById(id)).thenReturn(Optional.ofNullable(task));
+
+        String expected = "redirect:/day?date=2024-05-22";
+        String response = taskService.deleteTaskById(id);
+
+        verify(repository).deleteById(id);
+        assertEquals(expected, response);
     }
 
     @Test
     void getAllTasksBySearchAndDate() {
+        LocalDate localDate = LocalDate.of(2024, 5, 22);
+        when(repository.findByTitleContainingOrDescriptionContainingAndExpireDateGreaterThan(""
+                , "", localDate)).thenReturn(allTasks);
+
+        List<Task> expected = allTasks;
+        List<Task> response = taskService.getAllTasksBySearchAndDate("", "2024-05-22");
+
+        assertEquals(expected, response);
     }
+
 
     @Test
     void updateAndGetAllExpiredTasks() {
+        when(repository.findByStatus(TaskStatus.EXPIRED)).thenReturn(allTasks);
+
+        List<Task> expected = allTasks;
+        List<Task> response = taskService.updateAndGetAllExpiredTasks();
+
+        verify(repository, times(2)).saveAll(any(List.class));
+        assertEquals(expected, response);
     }
 
     @Test
     void changeStatusAndRedirect() {
+        when(repository.findById(1L)).thenReturn(Optional.ofNullable(task));
+
+        String expected = "redirect:/test";
+        String response = taskService.changeStatusAndRedirect("1", "/test");
+
+        verify(repository).save(any(Task.class));
+        assertEquals(expected, response);
+
     }
 
     @Test
     void updateTaskAndRedirect() {
+        Long id = 1L;
+        when(repository.findById(id)).thenReturn(Optional.ofNullable(task));
+
+        String expected = "redirect:/day?date=2024-05-22";
+        String response = taskService.updateTaskAndRedirect(id, "", ""
+                , "2024-05-22", "DONE");
+
+        verify(repository).save(any(Task.class));
+        assertEquals(expected, response);
     }
 }

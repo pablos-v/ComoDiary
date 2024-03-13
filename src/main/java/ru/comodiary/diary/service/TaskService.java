@@ -76,7 +76,7 @@ public class TaskService {
         LocalDate localDate = Util.convertStringToLocalDate(date);
         List<Task> taskList = repository.
                 findByTitleContainingOrDescriptionContainingAndExpireDateGreaterThan(query, query, localDate);
-        taskList.sort(Comparator.comparing(Task::getExpireDate));
+        if (taskList.size() > 1) taskList.sort(Comparator.comparing(Task::getExpireDate));
         return taskList;
     }
 
@@ -87,17 +87,18 @@ public class TaskService {
         if (!tasks.isEmpty()) {
             for (Task task : tasks) task.setStatus(TaskStatus.EXPIRED);
         }
-            repository.saveAll(tasks);
+        repository.saveAll(tasks);
         // найти среди просроченных таски старше или равные даты
         tasks = repository.findByExpireDateGreaterThanEqualAndStatusEquals(LocalDate.now(), TaskStatus.EXPIRED);
         // менять статусы
         if (!tasks.isEmpty()) {
             for (Task task : tasks) task.setStatus(TaskStatus.NOT_COMPLETED);
         }
-            repository.saveAll(tasks);
-        List<Task> taskList = repository.findByStatus(TaskStatus.EXPIRED);
-        taskList.sort(Comparator.comparing(Task::getExpireDate));
-        return taskList;
+        repository.saveAll(tasks);
+
+        tasks = repository.findByStatus(TaskStatus.EXPIRED);
+        if (tasks.size() > 1) tasks.sort(Comparator.comparing(Task::getExpireDate));
+        return tasks;
     }
 
     public String changeStatusAndRedirect(String id, String whereTo) {
