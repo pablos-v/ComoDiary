@@ -12,13 +12,19 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
+/**
+ * Основная бизнес-логика
+ */
 @RequiredArgsConstructor
 @Service
 public class TaskService {
 
+    public static final String DAY_WITH_DATE = "redirect:/day?date=";
     private final TaskRepository repository;
 
-    // Создание демо-задачи при первом запуске
+    /**
+     * Создание демо-задачи при первом запуске
+     */
     @PostConstruct
     private void createDemoTask() {
         if (repository.findAll().isEmpty()) {
@@ -28,11 +34,9 @@ public class TaskService {
     }
 
     public Month getAllTasksForMonth(String date) {
-        // берём первый день
         LocalDate startDate = Util.convertStringToLocalDate(date).with(TemporalAdjusters.firstDayOfMonth());
-        // берём последний день
         LocalDate lastDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
-        // нужно для вывода номеров дат с корректного дня недели
+        // нужна для вывода номеров дат с корректного дня недели
         int diffToMonday = startDate.getDayOfWeek().compareTo(DayOfWeek.MONDAY);
 
         List<Task> allTasksOfMonth = repository.findByExpireDateBetween(startDate, lastDate);
@@ -61,15 +65,14 @@ public class TaskService {
 
     public String addTaskAndRedirect(String title, String description, String expireDate, String status) {
         repository.save(new Task(title, description, expireDate, status));
-        return "redirect:/day?date=" + expireDate;
+        return DAY_WITH_DATE + expireDate;
     }
 
     public String deleteTaskById(Long id) {
-        // не нужно проверять на экзист, это сделает getTaskById(id)
         String date = getTaskById(id).getExpireDate().toString();
         repository.deleteById(id);
 
-        return "redirect:/day?date=" + date;
+        return DAY_WITH_DATE + date;
     }
 
     public List<Task> getAllTasksBySearchAndDate(String query, String date) {
@@ -80,25 +83,30 @@ public class TaskService {
         return taskList;
     }
 
-    public List<Task> updateAndGetAllExpiredTasks() {
-        // найти все невып таски младше даты
+    public List<Task> getAllExpiredTasks() {
+        updateTasks();
+        List<Task> tasks = repository.findByStatus(TaskStatus.EXPIRED);
+        if (tasks.size() > 1) tasks.sort(Comparator.comparing(Task::getExpireDate));
+        return tasks;
+    }
+
+    /**
+     * Актуализирует статусы невыполненных просроченных задач и просроченных задач с изменённой датой
+     */
+    private void updateTasks() {
+        // обновить статусы всем просроченным невыполненным задачам
         List<Task> tasks = repository.findByExpireDateLessThanAndStatusEquals(LocalDate.now(), TaskStatus.NOT_COMPLETED);
-        // всем менять статус
         if (!tasks.isEmpty()) {
             for (Task task : tasks) task.setStatus(TaskStatus.EXPIRED);
         }
         repository.saveAll(tasks);
-        // найти среди просроченных таски старше или равные даты
+
+        // обновить статусы при изменении даты просроченной задачи
         tasks = repository.findByExpireDateGreaterThanEqualAndStatusEquals(LocalDate.now(), TaskStatus.EXPIRED);
-        // менять статусы
         if (!tasks.isEmpty()) {
             for (Task task : tasks) task.setStatus(TaskStatus.NOT_COMPLETED);
         }
         repository.saveAll(tasks);
-
-        tasks = repository.findByStatus(TaskStatus.EXPIRED);
-        if (tasks.size() > 1) tasks.sort(Comparator.comparing(Task::getExpireDate));
-        return tasks;
     }
 
     public String changeStatusAndRedirect(String id, String whereTo) {
@@ -116,6 +124,6 @@ public class TaskService {
         task.setExpireDate(Util.convertStringToLocalDate(expireDate));
         if (!status.equals("no")) task.setStatus(Util.stringToStatus(status));
         repository.save(task);
-        return "redirect:/day?date=" + expireDate;
+        return DAY_WITH_DATE + expireDate;
     }
 }

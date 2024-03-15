@@ -5,13 +5,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.comodiary.diary.service.TaskService;
 
+/**
+ * Контроллер, отвечающий за операции удаления, создания и изменения задач
+ */
 @Controller
 @AllArgsConstructor
 public class OperationsController {
 
     private final TaskService service;
 
-    // создать новую
+    /**
+     * Создание новой задачи (Create)
+     * @param title Заголовок
+     * @param description Описание
+     * @param expireDate Дата
+     * @param status Статус
+     * @return Редирект на день с датой = expireDate
+     */
     @PostMapping("/task")
     public String addNewTask(@RequestParam("title") String title,
                                    @RequestParam("description") String description,
@@ -21,7 +31,15 @@ public class OperationsController {
         return service.addTaskAndRedirect(title, description, expireDate, status);
     }
 
-    // фактически это PUT, но HTML формы поддерживают только 2 метода GET и POST... ссыль в литературе есть
+    /**
+     * Изменение существующей задачи (Update)
+     * @param id Идентификатор задачи
+     * @param title Заголовок
+     * @param description Описание
+     * @param expireDate Дата
+     * @param status Статус
+     * @return Редирект на день с датой = expireDate
+     */
     @PostMapping("/task/{id}")
     public String updateTask(@PathVariable Long id, @RequestParam("title") String title,
                                    @RequestParam("description") String description,
@@ -31,14 +49,23 @@ public class OperationsController {
         return service.updateTaskAndRedirect(id, title, description, expireDate, status);
     }
 
-    // удаляет задачу и редиректит обратно в день
+    /**
+     * Удаление задачи (Delete)
+     * @param id Идентификатор задачи
+     * @return Редирект на день с датой = expireDate удалённой задачи
+     */
     @PostMapping("/delete/{id}")
     public String deleteById(@PathVariable Long id) {
 
         return service.deleteTaskById(id);
     }
 
-    // смена статуса задачи и редирект смотря куда надо
+    /**
+     * Смена статуса задачи
+     * @param id Идентификатор задачи
+     * @param whereTo адрес для переадресации
+     * @return Редирект по адресу, заданному в whereTo
+     */
     @PostMapping("/change-status")
     public String changeTaskStatus(@RequestParam("id") String id,
                                          @RequestParam("whereTo") String whereTo) {

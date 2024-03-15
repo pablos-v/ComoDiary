@@ -3,14 +3,15 @@ package ru.comodiary.diary.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
-import java.util.Locale;
 
+/**
+ * Основная сущность, хранящаяся в БД
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -50,7 +51,8 @@ public class Task {
     public String getReadableExpireDate() {
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(this.expireDate);
     }
-    public String getWeekDay(){
+
+    public String getWeekDay() {
         return Util.getDayOfWeek(TextStyle.SHORT, this.expireDate);
     }
 }

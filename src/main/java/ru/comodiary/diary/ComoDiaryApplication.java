@@ -8,6 +8,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import ru.comodiary.diary.service.CustomUserDetailsService;
 
+/**
+ * Точка входа в приложение
+ */
 @AllArgsConstructor
 @SpringBootApplication
 public class ComoDiaryApplication {
@@ -18,11 +21,13 @@ public class ComoDiaryApplication {
         SpringApplication.run(ComoDiaryApplication.class, args);
     }
 
-    // создание пользователя и пароля из аргументов при первом запуске
-    // java -jar .\app.jar USER PASSWORD
+    /**
+     * Создание пользователя и пароля из аргументов командной строки при первом запуске
+     * java -jar .\app.jar USER PASSWORD
+     */
     @Bean
-    public CommandLineRunner CommandLineRunnerBean() {
-        return (args) -> {
+    public CommandLineRunner commandLineRunnerBean() {
+        return args -> {
             if (args.length > 1) {
                 CustomUserDetailsService userService = applicationContext.getBean(CustomUserDetailsService.class);
                 userService.createUser(args[0], args[1]);

@@ -3,7 +3,9 @@ package ru.comodiary.diary.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+/**
+ * Пользователь - сущность, хранящаяся в БД
+ */
 @Data
 @Entity
 @Table(name = "users")

@@ -6,7 +6,12 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Util {
+/**
+ * Вспомогательный класс со статическими методами
+ */
+public final class Util {
+    private Util() {
+    }
 
     public static TaskStatus stringToStatus(String s) {
         return switch (s) {

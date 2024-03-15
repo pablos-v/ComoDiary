@@ -1,7 +1,6 @@
 package ru.comodiary.diary.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import ru.comodiary.diary.model.Task;
 import ru.comodiary.diary.model.TaskStatus;
 

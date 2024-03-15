@@ -5,6 +5,10 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * DTO для шаблона представления month
+ */
 @Data
 public class Month {
     private final List<Week> weeks;
@@ -18,23 +22,23 @@ public class Month {
     }
 
     private List<Week> prepareWeeks(List<Task> allTasksOfMonth, int diffToMonday, LocalDate lastDate) {
-        List<Week> weeks= new ArrayList<>();
+        List<Week> weeks = new ArrayList<>();
         byte last = (byte) lastDate.getDayOfMonth();
         byte counter = 1;
-
+        // для создания ровной таблицы на месяц нужны 5 недель
         for (int i = 0; i < 5; i++) {
             Week week = new Week();
             for (int d = 0; d < 7; d++) {
                 Day day;
-                // вью будет с понедельника, чтобы все ячейки были заполнены,
-                // проверяем с какого дня стартует месяц и добиваем пустые дни
+                // таблица начинается с понедельника - чтобы все ячейки были заполнены, нужно проверить с какого
+                // дня стартует месяц и вставить в таблицу пустые дни предыдущего и следующего месяцев
                 if (diffToMonday > 0) {
                     day = new Day();
                     diffToMonday--;
+                    // здесь считаются дни месяца и добавляются задачи в Day
                 } else if (counter <= last) {
                     day = new Day(counter);
                     day.setDate(lastDate.withDayOfMonth(counter++));
-                    // всунуть в день его таски
                     if (!allTasksOfMonth.isEmpty()) {
                         for (Task task : allTasksOfMonth) {
                             if (day.getDate().equals(task.getExpireDate())) {

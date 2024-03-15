@@ -122,7 +122,7 @@ class TaskServiceTest {
         when(repository.findByStatus(TaskStatus.EXPIRED)).thenReturn(allTasks);
 
         List<Task> expected = allTasks;
-        List<Task> response = taskService.updateAndGetAllExpiredTasks();
+        List<Task> response = taskService.getAllExpiredTasks();
 
         verify(repository, times(2)).saveAll(any(List.class));
         assertEquals(expected, response);

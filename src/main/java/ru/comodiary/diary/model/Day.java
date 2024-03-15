@@ -9,8 +9,10 @@ import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
+/**
+ * DTO для шаблона представления day
+ */
 @Data
 @NoArgsConstructor
 public class Day {
