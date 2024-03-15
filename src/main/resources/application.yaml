@@ -1,18 +1,14 @@
 server:
-  port: 8181
+  port: 8080
   servlet:
     session:
       timeout: 4h
 spring:
   datasource:
-    url: jdbc:h2:file:./data/mydb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  #    url: jdbc:postgresql://localhost:5432/postgres
-  #    username: sa
-  #    password:
-  #    driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: comodiary
+      password: comodataconnect
+      driverClassName: org.postgresql.Driver
 
   jpa:
     show-sql: true
@@ -20,4 +16,4 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect

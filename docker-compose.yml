@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  app:
+    image: comobackend:1.0
+    container_name: comodiary_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      # зависимость чтобы БД поднялась раньше
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/postgres
+
+  db:
+    image: postgres:14.7-alpine
+    container_name: comodiary_db
+    environment:
+      POSTGRES_USER: comodiary
+      POSTGRES_PASSWORD: comodataconnect
+    ports:
+      - "5432:5432"
+    volumes:
+      # инициация БД
+      - ./infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      # чтобы изменения в БД не потерялись при перезапуске образа
+      - db-data:/var/lib/postgresql/data
+    restart: always
+    # убедиться что БД уже точно поднялась
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "comodiary" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db-data:

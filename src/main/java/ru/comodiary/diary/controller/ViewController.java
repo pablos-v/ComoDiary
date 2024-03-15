@@ -25,7 +25,7 @@ public class ViewController {
     }
 
     @GetMapping("/3_days")
-    public String viewFourDays(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
+    public String viewThreeDays(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         model.addAttribute("threeDays", service.getAllTasksThreeDays(date));
         return "3_days";
@@ -64,7 +64,7 @@ public class ViewController {
 
 
     @GetMapping("/task")
-    public String viewAddTask(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
+    public String viewNewTask(Model model, @RequestParam(value = "date", defaultValue = "nowDate") String date) {
         model.addAttribute("task", Util.prepareTask(date));
         model.addAttribute("expired", service.updateAndGetAllExpiredTasks());
         return "task";
