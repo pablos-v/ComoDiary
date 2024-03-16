@@ -41,9 +41,9 @@
                 (${task.getTitle().length() <= 25} ? ${task.getTitle()}
                 : ${task.getTitle().substring(0, 25)} + '...')"></p>
                     </a>
-                    <form th:action="'/change-status'" method="POST">
+                    <form th:action="'/change-status'" th:method="PUT">
                         <input type="hidden" name="id" th:value="${task.getId()}">
-                        <input type="hidden" name="whereTo" value="3_days">
+                        <input type="hidden" name="whereTo" th:value="'3_days?date=' + ${threeDays.getFirstDate()}">
                         <input type="submit" th:class="${task.getStatus().toString() == 'DONE'} ? 'btn-set' : 'btn-done'"
                                th:value="${task.getStatus().toString() == 'DONE'} ? 'Не выполнено' : 'Выполнено'">
                     </form>

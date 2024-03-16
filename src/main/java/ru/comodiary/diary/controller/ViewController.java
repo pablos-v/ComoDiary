@@ -1,6 +1,7 @@
 package ru.comodiary.diary.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class ViewController {
 
     public static final String EXPIRED = "expired";
@@ -24,8 +26,9 @@ public class ViewController {
 
     /**
      * Представление "месяц"
+     *
      * @param model Модель данных - класс, предоставляемый Spring
-     * @param date Дата, передаваемая с клиента
+     * @param date  Дата, передаваемая с клиента
      * @return Отдаёт представление "месяц" за месяц текущей даты, если в форме была введена дата-то с указанной.
      * При этом передаёт в модель обновлённый список просроченных задач "expired", экземпляр Month, и название.
      */
@@ -39,8 +42,9 @@ public class ViewController {
 
     /**
      * Представление "3 дня"
+     *
      * @param model Модель данных - класс, предоставляемый Spring
-     * @param date Дата, передаваемая с клиента
+     * @param date  Дата, передаваемая с клиента
      * @return Отдаёт представление "3 дня" за 3 дня с текущей даты, если в форме была введена дата-то с указанной.
      * При этом передаёт в модель обновлённый список просроченных задач "expired", и экземпляр ThreeDays.
      */
@@ -53,8 +57,9 @@ public class ViewController {
 
     /**
      * Представление "День"
+     *
      * @param model Модель данных - класс, предоставляемый Spring
-     * @param date Дата, передаваемая с клиента
+     * @param date  Дата, передаваемая с клиента
      * @return Отдаёт представление "День" за текущую даты, если в форме была введена дата-то за указанную.
      * При этом передаёт в модель обновлённый список просроченных задач "expired", и экземпляр Day.
      */
@@ -67,8 +72,9 @@ public class ViewController {
 
     /**
      * Представление "Список"
+     *
      * @param model Модель данных - класс, предоставляемый Spring
-     * @param date Дата, передаваемая с клиента
+     * @param date  Дата, передаваемая с клиента
      * @return Отдаёт представление "Список", в котором отображаются задачи, подходящие по фильру поисковой
      * строки и даты. По умолчанию, дата - текущий день, а поисковая строка пуста - то есть все задачи.
      * При этом передаёт в модель обновлённый список просроченных задач "expired", и список задач для отображения.
@@ -85,6 +91,7 @@ public class ViewController {
 
     /**
      * Представление "Список" для просроченных задач
+     *
      * @param model Модель данных - класс, предоставляемый Spring
      * @return Отдаёт представление "Список", в котором отображаются только просроченные задачи.
      * При этом передаёт в модель обновлённые списки просроченных задач "expired","tasks".
@@ -101,22 +108,31 @@ public class ViewController {
 
     /**
      * Представление "Задача" для просмотра имеющейся задачи
+     *
      * @param model Модель данных - класс, предоставляемый Spring
-     * @param id Идентификатор задачи
+     * @param id    Идентификатор задачи
      * @return Отдаёт представление "Задача" для отображения существующего экземпляра Task.
      * При этом передаёт в модель обновлённый список просроченных задач "expired"
      */
     @GetMapping("/task/{id}")
     public String viewTask(Model model, @PathVariable Long id) {
         model.addAttribute(EXPIRED, service.getAllExpiredTasks());
-        model.addAttribute("task", service.getTaskById(id));
+        Task task;
+        try {
+            task = service.getTaskById(id);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return "redirect:/";
+        }
+        model.addAttribute("task", task);
         return "task";
     }
 
     /**
      * Представление "Задача"
+     *
      * @param model Модель данных - класс, предоставляемый Spring
-     * @param date Дата, передаваемая с клиента
+     * @param date  Дата, передаваемая с клиента
      * @return Отдаёт представление "Задача" для отображения нового экземпляра Task.
      * При этом передаёт в модель обновлённый список просроченных задач "expired"
      */

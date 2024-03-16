@@ -41,7 +41,7 @@
                        th:text="${task.getTitle().length() <= 50} ? ${task.getTitle()}
                             : ${task.getTitle().substring(0, 50)} + '...'"></p>
                 </a>
-                <form th:action="'/change-status'" method="POST">
+                <form th:action="'/change-status'" th:method="PUT">
                     <input type="hidden" name="id" th:value="${task.getId()}">
                     <input type="hidden" name="whereTo" th:value="'/day?date=' + ${day.getDate()}">
                     <input type="submit" th:class="${task.getStatus().toString() == 'DONE'} ? 'btn-set' : 'btn-done'"

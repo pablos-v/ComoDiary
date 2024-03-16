@@ -22,7 +22,7 @@
                 (${task.getTitle().length() <= 100} ? ${task.getTitle()}
                 : ${task.getTitle().substring(0, 100)} + '...')"></p>
             </a>
-            <form th:action="'/change-status'" method="POST">
+            <form th:action="'/change-status'" th:method="PUT">
                 <input type="hidden" name="id" th:value="${task.getId()}">
                 <input type="hidden" name="whereTo" th:value="${urlAddress}">
                 <input type="submit" th:class="${task.getStatus().toString() == 'DONE'} ? 'btn-set' : 'btn-done'"

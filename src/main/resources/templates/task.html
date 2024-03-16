@@ -20,7 +20,7 @@
     <!--отображение тела задачи-->
     <div>
         <form class="task-form" th:action="${task.getId() != null} ? '/task/' + ${task.getId()} : '/task'"
-              method="POST">
+              th:method="${task.getId() != null} ? 'PUT' : 'POST'">
             <label for="title">Название:</label>
             <input type="text" id="title" name="title" th:value="${task.getTitle()}" required maxlength="150">
             <label for="description">Описание:</label>
@@ -49,7 +49,7 @@
         </form>
     </div>
     <div class="task-view-btns">
-        <form th:if="${task.getId() != null}" th:action="'/delete/' +${task.getId()}" method="POST">
+        <form th:if="${task.getId() != null}" th:action="'/delete/' +${task.getId()}" th:method="DELETE">
             <input class="btn-del" type="submit" value="Удалить">
         </form>
         <input class="btn-set" type="submit" value="Отмена" onclick="history.back()">

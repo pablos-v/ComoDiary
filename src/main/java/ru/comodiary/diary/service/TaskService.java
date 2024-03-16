@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class TaskService {
 
-    public static final String DAY_WITH_DATE = "redirect:/day?date=";
+    private static final String DAY_WITH_DATE = "redirect:/day?date=";
     private final TaskRepository repository;
 
     /**

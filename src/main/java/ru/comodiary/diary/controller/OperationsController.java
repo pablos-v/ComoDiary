@@ -40,7 +40,7 @@ public class OperationsController {
      * @param status Статус
      * @return Редирект на день с датой = expireDate
      */
-    @PostMapping("/task/{id}")
+    @PutMapping("/task/{id}")
     public String updateTask(@PathVariable Long id, @RequestParam("title") String title,
                                    @RequestParam("description") String description,
                                    @RequestParam("expireDate") String expireDate,
@@ -54,7 +54,7 @@ public class OperationsController {
      * @param id Идентификатор задачи
      * @return Редирект на день с датой = expireDate удалённой задачи
      */
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteById(@PathVariable Long id) {
 
         return service.deleteTaskById(id);
@@ -66,7 +66,7 @@ public class OperationsController {
      * @param whereTo адрес для переадресации
      * @return Редирект по адресу, заданному в whereTo
      */
-    @PostMapping("/change-status")
+    @PutMapping("/change-status")
     public String changeTaskStatus(@RequestParam("id") String id,
                                          @RequestParam("whereTo") String whereTo) {
 
