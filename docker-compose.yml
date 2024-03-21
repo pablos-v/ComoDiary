@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "80:8080"
       # зависимость чтобы БД поднялась раньше
     depends_on:
       db:
@@ -32,7 +32,7 @@ services:
     restart: always
     # убедиться что БД уже точно поднялась
     healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "comodiary" ]
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "user" ]
       interval: 1s
       timeout: 5s
       retries: 10
