@@ -48,10 +48,18 @@ public class Task {
         this.status = Util.stringToStatus(status);
     }
 
+    /**
+     * Метод используется шаблонами Thymeleaf для отображения даты в читабельном формате.
+     * @return Отформатированная дата
+     */
     public String getReadableExpireDate() {
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(this.expireDate);
     }
 
+    /**
+     * Метод используется шаблонами Thymeleaf для отображения дня недели в заданном формате.
+     * @return Сокращённое написание дня недели
+     */
     public String getWeekDay() {
         return Util.getDayOfWeek(TextStyle.SHORT, this.expireDate);
     }

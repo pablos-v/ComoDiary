@@ -13,6 +13,7 @@ import ru.comodiary.diary.service.TaskService;
 public class OperationsController {
 
     private final TaskService service;
+    private static final String REDIRECT_DAY_DATE = "redirect:/day?date=";
 
     /**
      * Создание новой задачи (Create)
@@ -28,7 +29,8 @@ public class OperationsController {
                                    @RequestParam("expireDate") String expireDate,
                                    @RequestParam("status") String status) {
 
-        return service.addTaskAndRedirect(title, description, expireDate, status);
+        service.addTask(title, description, expireDate, status);
+        return REDIRECT_DAY_DATE + expireDate;
     }
 
     /**
@@ -46,18 +48,19 @@ public class OperationsController {
                                    @RequestParam("expireDate") String expireDate,
                                    @RequestParam(name = "status", defaultValue = "no") String status) {
 
-        return service.updateTaskAndRedirect(id, title, description, expireDate, status);
+        service.updateTask(id, title, description, expireDate, status);
+        return REDIRECT_DAY_DATE  + expireDate;
     }
 
     /**
-     * Удаление задачи (Delete)
+     * Удаление задачи (Delete) по ID и редирект.
      * @param id Идентификатор задачи
      * @return Редирект на день с датой = expireDate удалённой задачи
      */
     @DeleteMapping("/delete/{id}")
     public String deleteById(@PathVariable Long id) {
 
-        return service.deleteTaskById(id);
+        return REDIRECT_DAY_DATE + service.deleteTaskById(id).getExpireDate().toString();
     }
 
     /**
@@ -67,9 +70,8 @@ public class OperationsController {
      * @return Редирект по адресу, заданному в whereTo
      */
     @PutMapping("/change-status")
-    public String changeTaskStatus(@RequestParam("id") String id,
-                                         @RequestParam("whereTo") String whereTo) {
-
-        return service.changeStatusAndRedirect(id, whereTo);
+    public String changeTaskStatus(@RequestParam("id") String id, @RequestParam("whereTo") String whereTo) {
+        service.changeTaskStatusById(id);
+        return "redirect:" + whereTo;
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import ru.comodiary.diary.service.CustomUserDetailsService;
+import ru.comodiary.diary.security.CustomUserDetailsService;
 
 /**
  * Точка входа в приложение

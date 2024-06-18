@@ -80,31 +80,6 @@ class TaskServiceTest {
     }
 
     @Test
-    void addTaskAndRedirect() {
-        when(repository.save(task)).thenReturn(task);
-
-        String expected = "redirect:/day?date=2024-05-22";
-        String response = taskService.addTaskAndRedirect(task.getTitle()
-                , task.getDescription(), "2024-05-22", task.getStatus().toString());
-
-        verify(repository).save(task);
-        assertEquals(expected, response);
-    }
-
-
-    @Test
-    void deleteTaskById() {
-        Long id = 1L;
-        when(repository.findById(id)).thenReturn(Optional.ofNullable(task));
-
-        String expected = "redirect:/day?date=2024-05-22";
-        String response = taskService.deleteTaskById(id);
-
-        verify(repository).deleteById(id);
-        assertEquals(expected, response);
-    }
-
-    @Test
     void getAllTasksBySearchAndDate() {
         LocalDate localDate = LocalDate.of(2024, 5, 22);
         when(repository.findByTitleContainingOrDescriptionContainingAndExpireDateGreaterThan(""
@@ -128,28 +103,4 @@ class TaskServiceTest {
         assertEquals(expected, response);
     }
 
-    @Test
-    void changeStatusAndRedirect() {
-        when(repository.findById(1L)).thenReturn(Optional.ofNullable(task));
-
-        String expected = "redirect:/test";
-        String response = taskService.changeStatusAndRedirect("1", "/test");
-
-        verify(repository).save(any(Task.class));
-        assertEquals(expected, response);
-
-    }
-
-    @Test
-    void updateTaskAndRedirect() {
-        Long id = 1L;
-        when(repository.findById(id)).thenReturn(Optional.ofNullable(task));
-
-        String expected = "redirect:/day?date=2024-05-22";
-        String response = taskService.updateTaskAndRedirect(id, "", ""
-                , "2024-05-22", "DONE");
-
-        verify(repository).save(any(Task.class));
-        assertEquals(expected, response);
-    }
 }

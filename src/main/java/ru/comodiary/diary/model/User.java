@@ -3,10 +3,13 @@ package ru.comodiary.diary.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Пользователь - сущность, хранящаяся в БД
  */
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -24,13 +27,10 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    public User(String login, String password, String role) {
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
-        this.role = role;
+        this.role = "user";
     }
 
-    public User() {
-
-    }
 }
